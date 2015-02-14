@@ -8,7 +8,7 @@
   function TimelineCtrl($modal, Lypos) {
     var vm = this;
 
-    vm.lypos = [];
+    vm.groups = [];
     vm.empty = true;
 
     vm.openCreate = openCreate;
@@ -27,6 +27,7 @@
         .then(function (lypos) {
           vm.lypos = lypos;
           vm.empty = lypos.length === 0;
+          sortGroups();
         });
     }
 
@@ -39,6 +40,23 @@
 
       modalInstance.result.then(function (lypo) {
         vm.lypos.push(lypo);
+        sortGroups();
+      });
+    }
+
+    function sortGroups() {
+      vm.groups = [];
+      _.each(vm.lypos, function (lypo) {
+        var day = lypo.at.format('MMM D');
+        var group = _.find(vm.groups, { day: day });
+        if(group) {
+          group.lypos.push(lypo);
+        } else {
+          vm.groups.push({
+            day: day,
+            lypos: [lypo]
+          });
+        }
       });
     }
   }

@@ -8,6 +8,8 @@
   function Lypos(Restangular) {
     var route = 'lypos';
 
+    Restangular.extendModel(route, extendModel);
+
     var service = {
       query: query,
       create: create
@@ -29,6 +31,12 @@
       return Restangular
         .all(route)
         .post(model);
+    }
+
+    function extendModel(model) {
+      model.at = moment(model.at);
+
+      return model;
     }
   }
 

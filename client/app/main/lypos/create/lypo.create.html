@@ -6,7 +6,7 @@
   <form role="form" novalidate name="form" class="form" ng-submit="vm.create(form)">
     <div class="modal-body">
       <div class="form-group text-center">
-        <p class="form-control-static">{{ vm.lypo.at | date:'MMM d, yyyy' }} around {{ vm.lypo.at | date:'ha' | lowercase }}</p>
+        <p class="form-control-static">{{ vm.lypo.at | amDateFormat:'MMM d, yyyy' }} around {{ vm.lypo.at | amDateFormat:'ha' | lowercase }}</p>
       </div>
       <div class="form-group">
         <textarea class="form-control" rows="3" placeholder="...lypo - something interesting and unusual" ng-model="vm.lypo.text" required></textarea>

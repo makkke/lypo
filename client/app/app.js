@@ -41,5 +41,5 @@ angular.module('lypo.app', [
   });
 })
 .constant('angularMomentConfig', {
-  preprocess: 'unix'
+  preprocess: 'utc'
 });

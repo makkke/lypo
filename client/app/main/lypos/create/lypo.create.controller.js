@@ -8,7 +8,7 @@
   function LypoCreateCtrl($modalInstance, Lypos, Authors) {
     var vm = this;
 
-    vm.lypo = { at: new Date() };
+    vm.lypo = { at: moment() };
     vm.authors = [];
 
     vm.cancel = cancel;
