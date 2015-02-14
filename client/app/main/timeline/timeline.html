@@ -1,8 +1,7 @@
-<a href class="page-btn--create" ng-click="vm.openCreate()" ng-if="!vm.empty"><i class="fa fa-plus"></i></a>
-
 <div class="container">
-  <div class="page-header">
+  <div class="page-header" style="position: relative;">
     <h1>Timeline</h1>
+    <a href class="page-btn--create" ng-click="vm.openCreate()" ng-if="!vm.empty"><i class="fa fa-plus"></i></a>
   </div>
 
   <div class="row">
@@ -12,10 +11,10 @@
         <p><a class="btn btn-success btn-lg" href role="button" ng-click="vm.openCreate()">Create one</a></p>
       </div>
 
-      <div class="list-group" ng-repeat="quote in vm.quotes | orderBy:'-at'" ng-if="!vm.empty">
+      <div class="list-group" ng-repeat="lypo in vm.lypos | orderBy:'-at'" ng-if="!vm.empty">
         <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">{{ quote.author.name }} <small><span am-time-ago="quote.at"></span></small></h4>
-          <p class="list-group-item-text">{{ quote.text }}</p>
+          <h4 class="list-group-item-heading">{{ lypo.author.name }} <small><span am-time-ago="lypo.at"></span></small></h4>
+          <p class="list-group-item-text">{{ lypo.text }}</p>
         </a>
       </div>
     </div>

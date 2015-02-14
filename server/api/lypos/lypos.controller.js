@@ -10,15 +10,15 @@
 'use strict';
 
 var _ = require('lodash');
-var Quote = require('./quote.model');
+var Lypo = require('./lypo.model');
 
 exports.index = function (req, res) {
-  Quote
+  Lypo
     .find()
     .populate('author')
-    .exec(function (err, quotes) {
+    .exec(function (err, lypos) {
       if(err) { return handleError(res, err); }
-      return res.json(200, quotes);
+      return res.json(200, lypos);
     });
 };
 
@@ -32,14 +32,14 @@ exports.index = function (req, res) {
 // };
 
 exports.create = function (req, res) {
-  Quote.create(req.body, function (err, quote) {
+  Lypo.create(req.body, function (err, lypo) {
     if(err) { return handleError(res, err); }
-    Quote
-      .findById(quote._id)
+    Lypo
+      .findById(lypo._id)
       .populate('author')
-      .exec(function (err, quote) {
+      .exec(function (err, lypo) {
         if(err) { return handleError(res, err); }
-        return res.json(201, quote);
+        return res.json(201, lypo);
       });
   });
 };

@@ -3,12 +3,12 @@
 
   angular
     .module('lypo.app')
-    .controller('QuoteCreateCtrl', QuoteCreateCtrl);
+    .controller('LypoCreateCtrl', LypoCreateCtrl);
 
-  function QuoteCreateCtrl($modalInstance, Quotes, Authors) {
+  function LypoCreateCtrl($modalInstance, Lypos, Authors) {
     var vm = this;
 
-    vm.quote = { at: new Date() };
+    vm.lypo = { at: new Date() };
     vm.authors = [];
 
     vm.cancel = cancel;
@@ -17,21 +17,18 @@
     activate();
 
     ////////////////////////////////
-    
+
     function activate() {
       loadAuthors();
     }
 
     function create(form) {
       if(form.$valid) {
-        $modalInstance.close(vm.quote);
-        Quotes
-          .create(vm.quote)
-          .then(function () {
-            console.log('saved quote');
-          })
+        $modalInstance.close(vm.lypo);
+        Lypos
+          .create(vm.lypo)
           .catch(function (response) {
-            console.log(response);
+            console.error(response);
           });
       }
     }
@@ -42,7 +39,7 @@
 
     function loadAuthors() {
       Authors
-        .query() 
+        .query()
         .then(function (authors) {
           vm.authors = authors;
         });

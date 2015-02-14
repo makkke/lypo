@@ -6,14 +6,14 @@
   <form role="form" novalidate name="form" class="form" ng-submit="vm.create(form)">
     <div class="modal-body">
       <div class="form-group text-center">
-        <p class="form-control-static">{{ vm.quote.at | date:'MMM d, yyyy' }} around {{ vm.quote.at | date:'ha' | lowercase }}</p>
+        <p class="form-control-static">{{ vm.lypo.at | date:'MMM d, yyyy' }} around {{ vm.lypo.at | date:'ha' | lowercase }}</p>
       </div>
       <div class="form-group">
-        <textarea class="form-control" rows="3" placeholder="...lypo - something interesting and unusual" ng-model="vm.quote.text" required></textarea>
+        <textarea class="form-control" rows="3" placeholder="...lypo - something interesting and unusual" ng-model="vm.lypo.text" required></textarea>
       </div>
       <div class="form-group">
         <label>By</label>
-        <select class="form-control" ng-model="vm.quote.author" ng-options="author.name for author in vm.authors">
+        <select class="form-control" ng-model="vm.lypo.author" ng-options="author.name for author in vm.authors">
           <option value="">-- Select Author --</option>
         </select>
       </div>

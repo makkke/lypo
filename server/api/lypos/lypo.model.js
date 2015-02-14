@@ -3,13 +3,13 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var QuoteSchema = new Schema({
+var LypoSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
   text: { type: String, required: true },
   at: { type: Date, required: true }
 });
 
-QuoteSchema.set('toJSON', {
+LypoSchema.set('toJSON', {
   transform: function (doc, ret) {
     ret.id = ret._id;
     delete ret._id;
@@ -17,4 +17,4 @@ QuoteSchema.set('toJSON', {
   }
 });
 
-module.exports = mongoose.model('Quote', QuoteSchema);
+module.exports = mongoose.model('Quote', LypoSchema);

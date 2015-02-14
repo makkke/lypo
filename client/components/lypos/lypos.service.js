@@ -3,10 +3,10 @@
 
   angular
     .module('lypo.app')
-    .factory('Quotes', Quotes);
+    .factory('Lypos', Lypos);
 
-  function Quotes(Restangular) {
-    var route = 'quotes';
+  function Lypos(Restangular) {
+    var route = 'lypos';
 
     var service = {
       query: query,
@@ -16,20 +16,20 @@
     return service;
 
     ////////////////////////////////
-    
+
     function query() {
       return Restangular
         .all(route)
         .getList();
     }
 
-    function create(quote) {
-      var model = angular.copy(quote);
-      model.author = quote.author.id;
+    function create(lypo) {
+      var model = angular.copy(lypo);
+      model.author = lypo.author.id;
       return Restangular
         .all(route)
         .post(model);
     }
   }
-  
+
 })();

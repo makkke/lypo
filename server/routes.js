@@ -9,11 +9,11 @@ var errors = require('./components/errors');
 module.exports = function (app) {
   app.use('/api/accounts', require('./api/accounts'));
   app.use('/api/authors', require('./api/authors'));
-  app.use('/api/quotes', require('./api/quotes'));
+  app.use('/api/lypos', require('./api/lypos'));
 
   app.use('/auth', require('./auth'));
   app.use('/settings', require('./settings'));
-  
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);

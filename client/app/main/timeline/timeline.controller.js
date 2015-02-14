@@ -5,10 +5,10 @@
     .module('lypo.app')
     .controller('TimelineCtrl', TimelineCtrl);
 
-  function TimelineCtrl($modal, Quotes) {
+  function TimelineCtrl($modal, Lypos) {
     var vm = this;
 
-    vm.quotes = [];
+    vm.lypos = [];
     vm.empty = true;
 
     vm.openCreate = openCreate;
@@ -18,27 +18,27 @@
     ////////////////////////////////
 
     function activate() {
-      loadQuotes();
+      loadLypos();
     }
 
-    function loadQuotes() {
-      Quotes
+    function loadLypos() {
+      Lypos
         .query()
-        .then(function (quotes) {
-          vm.quotes = quotes;
-          vm.empty = quotes.length === 0;
+        .then(function (lypos) {
+          vm.lypos = lypos;
+          vm.empty = lypos.length === 0;
         });
     }
 
     function openCreate() {
       var modalInstance = $modal.open({
-        templateUrl: 'app/main/quotes/create/quote.create.html',
-        controller: 'QuoteCreateCtrl',
+        templateUrl: 'app/main/lypos/create/lypo.create.html',
+        controller: 'LypoCreateCtrl',
         controllerAs: 'vm'
       });
 
-      modalInstance.result.then(function (quote) {
-        vm.quotes.push(quote);
+      modalInstance.result.then(function (lypo) {
+        vm.lypos.push(lypo);
       });
     }
   }

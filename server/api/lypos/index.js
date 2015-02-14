@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./quotes.controller');
+var controller = require('./lypos.controller');
 
 var router = express.Router();
 
