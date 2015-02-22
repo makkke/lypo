@@ -1,12 +1,3 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /things              ->  index
- * POST    /things              ->  create
- * GET     /things/:id          ->  show
- * PUT     /things/:id          ->  update
- * DELETE  /things/:id          ->  destroy
- */
-
 'use strict';
 
 var _ = require('lodash');
@@ -14,7 +5,7 @@ var Lypo = require('./lypo.model');
 
 exports.index = function (req, res) {
   Lypo
-    .find()
+    .find({ accountId: req.account._id })
     .populate('author')
     .exec(function (err, lypos) {
       if(err) { return handleError(res, err); }
@@ -32,7 +23,9 @@ exports.index = function (req, res) {
 // };
 
 exports.create = function (req, res) {
-  Lypo.create(req.body, function (err, lypo) {
+  var lypo = new Lypo(req.body);
+  lypo.accountId = req.account._id;
+  lypo.save(function (err) {
     if(err) { return handleError(res, err); }
     Lypo
       .findById(lypo._id)

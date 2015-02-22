@@ -5,13 +5,21 @@
     .module('lypo.app')
     .controller('AuthorsCtrl', AuthorsCtrl);
 
-  function AuthorsCtrl($modal, Authors) {
+  function AuthorsCtrl($scope, $modal, Authors) {
     var vm = this;
 
     vm.authors = [];
     vm.empty = true;
+    vm.loading = true;
 
     vm.openCreate = openCreate;
+
+    $scope.$watch('vm.authors', function (current) {
+      vm.empty = true;
+      if(current) {
+        vm.empty = current.length === 0;
+      }
+    });
 
     activate();
 
@@ -26,7 +34,7 @@
         .query()
         .then(function (authors) {
           vm.authors = authors;
-          vm.empty = authors.length === 0;
+          vm.loading = false;
         });
     }
 

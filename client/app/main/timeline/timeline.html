@@ -6,16 +6,18 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <div class="jumbotron text-center" ng-if="vm.empty">
+      <div ng-include="'components/spinner/spinner.html'" ng-show="vm.loading"></div>
+
+      <div class="jumbotron text-center" ng-if="vm.empty && !vm.loading">
         <h2>No lypos so far? Hard to believe...</h2>
         <p><a class="btn btn-success btn-lg" href role="button" ng-click="vm.openCreate()">Create one</a></p>
       </div>
 
-      <div ng-repeat="group in vm.groups | orderBy:'-day'" ng-if="!vm.empty">
+      <div ng-repeat="group in vm.groups | orderBy:'-day'" ng-if="!vm.empty && !vm.loading">
         <h2>{{ group.day }}</h2>
         <div class="list-group" ng-repeat="lypo in group.lypos | orderBy:'-at'">
           <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">{{ lypo.author.name }} <small><span am-time-ago="lypo.at"></span></small></h4>
+            <h4 class="list-group-item-heading">{{ lypo.author.fullName }} <small>{{ lypo.at | amDateFormat:'Ha' }}</small></h4>
             <p class="list-group-item-text">{{ lypo.text }}</p>
           </a>
         </div>

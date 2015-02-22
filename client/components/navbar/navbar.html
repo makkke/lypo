@@ -12,13 +12,13 @@
     <div collapse="vm.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
         <li ng-repeat="item in vm.menu" ng-class="{ active: vm.isActive(item.link) }">
-            <a ng-href="{{ item.link }}" ng-click="vm.isCollapsed = true">{{item.title}}</a>
+          <a ng-href="{{ item.link }}" ng-click="vm.isCollapsed = true">{{item.title}}</a>
         </li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li ng-show="vm.isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().fullname }}</p></li>
-        <li ng-show="vm.isLoggedIn()" ng-class="{ active: vm.isActive('/logout') }"><a href="" ng-click="vm.logout()">Logout</a></li>
+        <li><p class="navbar-text">Hello {{ vm.account.fullName }}</p></li>
+        <li ng-class="{ active: vm.isActive('/logout') }"><a href="" ng-click="vm.logout()">Logout</a></li>
       </ul>
     </div>
   </div>

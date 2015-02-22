@@ -1,10 +1,12 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+    timestamps = require('mongoose-timestamp'),
     Schema = mongoose.Schema;
 
 var AuthorSchema = new Schema({
-  name: String,
+  accountId: { type: Schema.Types.ObjectId, ref: 'Account', required: true },
+  fullName: String,
 });
 
 AuthorSchema.set('toJSON', {
@@ -14,5 +16,7 @@ AuthorSchema.set('toJSON', {
     delete ret.__v;
   }
 });
+
+AuthorSchema.plugin(timestamps);
 
 module.exports = mongoose.model('Author', AuthorSchema);

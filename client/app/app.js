@@ -12,7 +12,6 @@ angular.module('lypo.app', [
 ])
 .config(function ($urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/timeline');
-
   $locationProvider.html5Mode(true);
 })
 .run(function ($rootScope, $location, Settings, Restangular, Auth) {
@@ -23,8 +22,8 @@ angular.module('lypo.app', [
   });
   Restangular.setErrorInterceptor(function (response) {
     if(response.status === 401) {
-      $location.path('/login');
       Auth.logout();
+      $location.path('/login');
       return false;
     }
 
@@ -33,11 +32,9 @@ angular.module('lypo.app', [
 
   // Redirect to login if route requires auth and you're not logged in
   $rootScope.$on('$stateChangeStart', function (event, next) {
-    Auth.isLoggedInAsync(function (loggedIn) {
-      if(next.authenticate && !loggedIn) {
-        $location.path('/login');
-      }
-    });
+    if(next.authenticate && !Settings.account) {
+      $location.path('/login');
+    }
   });
 })
 .constant('angularMomentConfig', {

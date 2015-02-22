@@ -6,25 +6,21 @@
     .factory('Auth', Auth);
 
   function Auth($location, $rootScope, $http, Accounts, $cookieStore, $q, Settings) {
-    var currentAccount = {};
-    if($cookieStore.get(Settings.tokenName)) {
-      currentAccount = Accounts.me();
-    }
-
     var service = {
       getHeaders: getHeaders,
-      isLoggedInAsync: isLoggedInAsync,
-      isLoggedIn: isLoggedIn,
-      
+      // isLoggedInAsync: isLoggedInAsync,
+      // isLoggedIn: isLoggedIn,
+
       login: login,
       logout: logout,
       signup: signup,
+      // getCurrentAccount: getCurrentAccount,
     };
 
     return service;
 
     ////////////////////////////////
-    
+
     /**
      * Authenticates user and saves token
      *
@@ -32,22 +28,23 @@
      * @param  {Function} callback
      * @return {Promise}
      */
-    function login(credentials, callback) {
-      var cb = callback || angular.noop;
+    function login(credentials) {
       var deferred = $q.defer();
 
       $http
         .post('/auth/local', credentials)
         .success(function (data) {
           $cookieStore.put(Settings.tokenName, data.token);
-          currentAccount = Accounts.me();
-          deferred.resolve(data);
-          return cb();
+          Accounts
+            .me()
+            .then(function (account) {
+              Settings.account = account;
+              deferred.resolve();
+            });
         })
         .error(function (err) {
           logout();
           deferred.reject(err);
-          return cb(err);
         });
 
       return deferred.promise;
@@ -58,7 +55,7 @@
      */
     function logout() {
       $cookieStore.remove(Settings.tokenName);
-      currentAccount = {};
+      Settings.account = {};
     }
 
     /**
@@ -69,7 +66,7 @@
     function getHeaders() {
       var token = $cookieStore.get(Settings.tokenName),
           config = {};
-      
+
       if(token) {
         config = {
           headers: {
@@ -83,36 +80,36 @@
       return config;
     }
 
-    /**
-     * Checks if a account is logged in
-     *
-     * @return {Boolean}
-     */
-    function isLoggedIn() {
-      return currentAccount.hasOwnProperty('name');
-    }
+    // /**
+    //  * Checks if a account is logged in
+    //  *
+    //  * @return {Boolean}
+    //  */
+    // function isLoggedIn() {
+    //   return currentAccount.hasOwnProperty('fullName');
+    // }
 
-    /**
-     * Waits for currentAccount to resolve before checking if account is logged in
-     */
-    function isLoggedInAsync(callback) {
-      if('then' in currentAccount) {
-        currentAccount
-          .then(function (account) {
-            currentAccount = account;
-            callback(true);
-          })
-          .catch(function() {
-            callback(false);
-          });
-      }
-      else if(currentAccount.hasOwnProperty('name')) {
-        callback(true);
-      }
-      else {
-        callback(false);
-      }
-    }
+    // /**
+    //  * Waits for currentAccount to resolve before checking if account is logged in
+    //  */
+    // function isLoggedInAsync(callback) {
+    //   if('then' in currentAccount) {
+    //     currentAccount
+    //       .then(function (account) {
+    //         currentAccount = account;
+    //         callback(true);
+    //       })
+    //       .catch(function() {
+    //         callback(false);
+    //       });
+    //   }
+    //   else if(currentAccount.hasOwnProperty('name')) {
+    //     callback(true);
+    //   }
+    //   else {
+    //     callback(false);
+    //   }
+    // }
 
     /**
      * Creates a new account
@@ -128,8 +125,12 @@
         .post('api/accounts', account)
         .success(function (data) {
           $cookieStore.put(Settings.tokenName, data.token);
-          currentAccount = Accounts.me();
-          deferred.resolve(data);
+          Accounts
+            .me()
+            .then(function (account) {
+              Settings.account = account;
+              deferred.resolve();
+            });
         })
         .error(function (err) {
           this.logout();
@@ -160,14 +161,14 @@
     //     }).$promise;
     //   },
 
-    //   /**
-    //    * Gets all available info on authenticated user
-    //    *
-    //    * @return {Object} user
-    //    */
-    //   getcurrentAccount: function() {
-    //     return currentAccount;
-    //   },
+    // *
+    //  * Gets all available info on authenticated user
+    //  *
+    //  * @return {Object} user
+
+    // function getCurrentAccount() {
+    //   return currentAccount;
+    // }
 
     //   /**
     //    * Get auth token

@@ -21,9 +21,11 @@
 
     function create(form) {
       if(form.$valid) {
-        $modalInstance.close(vm.author);
         Authors
           .create(vm.author)
+          .then(function (author) {
+            $modalInstance.close(author);
+          })
           .catch(function (response) {
             console.log(response);
           });

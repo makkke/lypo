@@ -8,17 +8,14 @@
   function LoginCtrl($scope, Auth, $location, $window) {
     var vm = this;
 
-    vm.credentials = {
-      email: 'slava@gmail.com',
-      password: 'test123'
-    };
+    vm.credentials = {};
     vm.login = login;
     vm.loginOauth = loginOauth;
 
     activate();
 
     ////////////////////////////////
-    
+
     function activate() {
     }
 

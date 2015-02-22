@@ -5,24 +5,35 @@
     .module('lypo.app')
     .controller('NavbarCtrl', NavbarCtrl);
 
-  function NavbarCtrl($scope, $location, Auth) {
+  function NavbarCtrl($scope, $location, Auth, Settings) {
     var vm = this;
 
-    vm.menu = [
-      {
-        'title': 'Timeline',
-        'link': '/timeline'
-      },
-      {
-        'title': 'Authors',
-        'link': '/authors'
-      }
-    ];
+    vm.menu = getMenu();
+    vm.account = Settings.account;
     vm.isCollapsed = true;
-    vm.isLoggedIn = Auth.isLoggedIn;
-    vm.getCurrentUser = Auth.getCurrentUser;
+
     vm.logout = logout;
     vm.isActive = isActive;
+
+    activate();
+
+    ////////////////////////////////
+
+    function activate() {
+    }
+
+    function getMenu() {
+      return [
+        {
+          'title': 'Timeline',
+          'link': '/timeline'
+        },
+        {
+          'title': 'Authors',
+          'link': '/authors'
+        }
+      ];
+    }
 
     function logout() {
       Auth.logout();

@@ -8,20 +8,15 @@
   function SignupCtrl($scope, Auth, $location, $window) {
     var vm = this;
 
-    vm.account = {
-      fullname: 'Slava Ivanov',
-      email: 'slava@gmail.com',
-      password: 'test123'
-    };
+    vm.account = {};
     vm.signup = signup;
     vm.loginOauth = loginOauth;
 
     activate();
 
     ////////////////////////////////
-    
-    function activate() {
 
+    function activate() {
     }
 
     function signup(form) {

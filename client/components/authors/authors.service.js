@@ -5,7 +5,7 @@
     .module('lypo.app')
     .factory('Authors', Authors);
 
-  function Authors(Restangular) {
+  function Authors(Restangular, Settings) {
     var route = 'authors';
 
     var service = {
@@ -16,7 +16,7 @@
     return service;
 
     ////////////////////////////////
-    
+
     function query() {
       return Restangular
         .all(route)
@@ -29,5 +29,5 @@
         .post(author);
     }
   }
-  
+
 })();

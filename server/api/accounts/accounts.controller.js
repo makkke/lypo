@@ -9,13 +9,10 @@ var validationError = function (res, err) {
   return res.json(422, err);
 };
 
-/**
- * Creates a new account
- */
 exports.create = function (req, res, next) {
-  var newAccount = new Account(req.body);
-  newAccount.provider = 'local';
-  newAccount.save(function (err, account) {
+  var account = new Account(req.body);
+  account.provider = 'local';
+  account.save(function (err, account) {
     if(err) return validationError(res, err);
     var token = jwt.sign({ _id: account._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     res.json({ token: token });
@@ -48,7 +45,7 @@ exports.create = function (req, res, next) {
 
 // *
 //  * Change a users password
- 
+
 // exports.changePassword = function(req, res, next) {
 //   var userId = req.user._id;
 //   var oldPass = String(req.body.oldPassword);
@@ -71,7 +68,6 @@ exports.create = function (req, res, next) {
  * Get my info
  */
 exports.me = function (req, res, next) {
-  console.log(req.account, req.user);
   var accountId = req.account._id;
   Account.findOne({
     _id: accountId

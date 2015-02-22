@@ -3,14 +3,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
+var timestamps = require('mongoose-timestamp');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var AccountSchema = new Schema({
-  fullname: String,
-  email: { type: String, lowercase: true },
-  hashedPassword: String,
+  fullName: { type: String, required: true },
+  email: { type: String, lowercase: true, required: true },
+  hashedPassword: { type: String, required: true },
   provider: String,
-  salt: String,
+  salt: { type: String, required: true },
   google: {},
 });
 
@@ -127,5 +128,15 @@ AccountSchema.methods = {
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
   }
 };
+
+AccountSchema.plugin(timestamps);
+
+AccountSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  }
+});
 
 module.exports = mongoose.model('Account', AccountSchema);

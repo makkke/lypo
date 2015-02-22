@@ -5,13 +5,21 @@
     .module('lypo.app')
     .controller('TimelineCtrl', TimelineCtrl);
 
-  function TimelineCtrl($modal, Lypos) {
+  function TimelineCtrl($scope, $modal, Lypos) {
     var vm = this;
 
     vm.groups = [];
     vm.empty = true;
+    vm.loading = true;
 
     vm.openCreate = openCreate;
+
+    $scope.$watch('vm.authors', function (current) {
+      vm.empty = true;
+      if(current) {
+        vm.empty = current.length === 0;
+      }
+    });
 
     activate();
 
@@ -28,6 +36,7 @@
           vm.lypos = lypos;
           vm.empty = lypos.length === 0;
           sortGroups();
+          vm.loading = false;
         });
     }
 

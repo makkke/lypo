@@ -24,9 +24,11 @@
 
     function create(form) {
       if(form.$valid) {
-        $modalInstance.close(vm.lypo);
         Lypos
           .create(vm.lypo)
+          .then(function (lypo) {
+            $modalInstance.close(lypo);
+          })
           .catch(function (response) {
             console.error(response);
           });

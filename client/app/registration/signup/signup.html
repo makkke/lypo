@@ -5,10 +5,10 @@
     </div>
     <div class="col-sm-12">
       <form class="form" name="form" ng-submit="vm.signup(form)" novalidate>
-        <div class="form-group" ng-class="{ 'has-success': form.fullname.$valid && form.$submitted,
-                                            'has-error': form.fullname.$invalid && form.$submitted }">
-          <input type="text" name="fullname" class="form-control input-lg" placeholder="Full Name" ng-model="vm.account.fullname" required/>
-          <p class="help-block" ng-show="form.fullname.$error.required && form.$submitted">
+        <div class="form-group" ng-class="{ 'has-success': form.fullName.$valid && form.$submitted,
+                                            'has-error': form.fullName.$invalid && form.$submitted }">
+          <input type="text" name="fullName" class="form-control input-lg" placeholder="Full Name" ng-model="vm.account.fullName" autofocus required>
+          <p class="help-block" ng-show="form.fullName.$error.required && form.$submitted">
             Full Name is required
           </p>
         </div>
