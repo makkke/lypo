@@ -1,19 +1,19 @@
 <div class="container">
   <div class="page-header" style="position: relative;">
     <h1>Authors</h1>
-    <a href class="page-btn--create" ng-click="vm.openCreate()" ng-if="!vm.empty"><i class="fa fa-plus"></i></a>
+    <a href class="page-btn--create" ng-click="vm.openCreate()" ng-if="!vm.isEmpty()"><i class="fa fa-plus"></i></a>
   </div>
 
   <div class="row">
     <div class="col-lg-12">
       <div ng-include="'components/spinner/spinner.html'" ng-show="vm.loading"></div>
 
-      <div class="jumbotron text-center" ng-if="vm.empty && !vm.loading">
+      <div class="jumbotron text-center" ng-if="vm.isEmpty() && !vm.loading">
         <h2>All lypos should have an author...</h2>
         <p><a class="btn btn-success btn-lg" href role="button" ng-click="vm.openCreate()">Create author</a></p>
       </div>
 
-      <div class="list-group" ng-if="!vm.empty && !vm.loading">
+      <div class="list-group" ng-if="!vm.isEmpty() && !vm.loading">
         <a href="#" class="list-group-item" ng-repeat="author in vm.authors">{{ author.fullName }}</a>
       </div>
     </div>

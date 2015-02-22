@@ -9,17 +9,10 @@
     var vm = this;
 
     vm.groups = [];
-    vm.empty = true;
     vm.loading = true;
 
     vm.openCreate = openCreate;
-
-    $scope.$watch('vm.authors', function (current) {
-      vm.empty = true;
-      if(current) {
-        vm.empty = current.length === 0;
-      }
-    });
+    vm.isEmpty = isEmpty;
 
     activate();
 
@@ -67,6 +60,10 @@
           });
         }
       });
+    }
+
+    function isEmpty() {
+      return vm.lypos && vm.lypos.length === 0;
     }
   }
 })();

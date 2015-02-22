@@ -9,17 +9,10 @@
     var vm = this;
 
     vm.authors = [];
-    vm.empty = true;
     vm.loading = true;
 
     vm.openCreate = openCreate;
-
-    $scope.$watch('vm.authors', function (current) {
-      vm.empty = true;
-      if(current) {
-        vm.empty = current.length === 0;
-      }
-    });
+    vm.isEmpty = isEmpty;
 
     activate();
 
@@ -48,6 +41,10 @@
       modalInstance.result.then(function (author) {
         vm.authors.push(author);
       });
+    }
+
+    function isEmpty() {
+      return vm.authors && vm.authors.length === 0;
     }
   }
 })();

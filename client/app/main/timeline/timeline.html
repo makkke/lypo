@@ -1,19 +1,19 @@
 <div class="container">
   <div class="page-header" style="position: relative;">
     <h1>Timeline</h1>
-    <a href class="page-btn--create" ng-click="vm.openCreate()" ng-if="!vm.empty"><i class="fa fa-plus"></i></a>
+    <a href class="page-btn--create" ng-click="vm.openCreate()" ng-if="!vm.isEmpty()"><i class="fa fa-plus"></i></a>
   </div>
 
   <div class="row">
     <div class="col-sm-12">
       <div ng-include="'components/spinner/spinner.html'" ng-show="vm.loading"></div>
 
-      <div class="jumbotron text-center" ng-if="vm.empty && !vm.loading">
+      <div class="jumbotron text-center" ng-if="vm.isEmpty() && !vm.loading">
         <h2>No lypos so far? Hard to believe...</h2>
         <p><a class="btn btn-success btn-lg" href role="button" ng-click="vm.openCreate()">Create one</a></p>
       </div>
 
-      <div ng-repeat="group in vm.groups | orderBy:'-day'" ng-if="!vm.empty && !vm.loading">
+      <div ng-repeat="group in vm.groups | orderBy:'-day'" ng-if="!vm.isEmpty() && !vm.loading">
         <h2>{{ group.day }}</h2>
         <div class="list-group" ng-repeat="lypo in group.lypos | orderBy:'-at'">
           <a href="#" class="list-group-item">

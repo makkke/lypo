@@ -28,7 +28,6 @@
      * @return {Promise}
      */
     function login(credentials) {
-      var __this = this;
       var deferred = $q.defer();
 
       $http
@@ -37,8 +36,8 @@
           $cookieStore.put(Settings.tokenName, data.token);
           Accounts
             .me()
-            .then(function (account) {
-              __this.account = account;
+            .then(function (me) {
+              account = me;
               deferred.resolve();
             });
         })
@@ -55,7 +54,7 @@
      */
     function logout() {
       $cookieStore.remove(Settings.tokenName);
-      this.account = {};
+      account = {};
     }
 
     /**
@@ -119,7 +118,6 @@
      */
     function signup(account) {
       var deferred = $q.defer();
-      var __this = this;
 
       $http
         .post('api/accounts', account)
@@ -127,8 +125,8 @@
           $cookieStore.put(Settings.tokenName, data.token);
           Accounts
             .me()
-            .then(function (account) {
-              __this.account = account;
+            .then(function (me) {
+              account = me;
               deferred.resolve();
             });
         })
