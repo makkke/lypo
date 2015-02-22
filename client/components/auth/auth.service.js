@@ -5,16 +5,16 @@
     .module('lypo.app')
     .factory('Auth', Auth);
 
-  function Auth($location, $rootScope, $http, Accounts, $cookieStore, $q, Settings) {
+  function Auth($http, Accounts, $cookieStore, $q, Settings) {
+    var account;
+
     var service = {
+      account: account,
       getHeaders: getHeaders,
-      // isLoggedInAsync: isLoggedInAsync,
-      // isLoggedIn: isLoggedIn,
 
       login: login,
       logout: logout,
       signup: signup,
-      // getCurrentAccount: getCurrentAccount,
     };
 
     return service;
@@ -25,10 +25,10 @@
      * Authenticates user and saves token
      *
      * @param  {Object} credentials
-     * @param  {Function} callback
      * @return {Promise}
      */
     function login(credentials) {
+      var __this = this;
       var deferred = $q.defer();
 
       $http
@@ -38,7 +38,7 @@
           Accounts
             .me()
             .then(function (account) {
-              Settings.account = account;
+              __this.account = account;
               deferred.resolve();
             });
         })
@@ -55,7 +55,7 @@
      */
     function logout() {
       $cookieStore.remove(Settings.tokenName);
-      Settings.account = {};
+      this.account = {};
     }
 
     /**
@@ -115,11 +115,11 @@
      * Creates a new account
      *
      * @param  {Object}   user     - user info
-     * @param  {Function} callback - optional
      * @return {Promise}
      */
     function signup(account) {
       var deferred = $q.defer();
+      var __this = this;
 
       $http
         .post('api/accounts', account)
@@ -128,7 +128,7 @@
           Accounts
             .me()
             .then(function (account) {
-              Settings.account = account;
+              __this.account = account;
               deferred.resolve();
             });
         })
@@ -161,14 +161,6 @@
     //     }).$promise;
     //   },
 
-    // *
-    //  * Gets all available info on authenticated user
-    //  *
-    //  * @return {Object} user
-
-    // function getCurrentAccount() {
-    //   return currentAccount;
-    // }
 
     //   /**
     //    * Get auth token

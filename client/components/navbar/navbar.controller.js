@@ -5,11 +5,11 @@
     .module('lypo.app')
     .controller('NavbarCtrl', NavbarCtrl);
 
-  function NavbarCtrl($scope, $location, Auth, Settings) {
+  function NavbarCtrl($scope, $location, Auth) {
     var vm = this;
 
     vm.menu = getMenu();
-    vm.account = Settings.account;
+    vm.account = Auth.account;
     vm.isCollapsed = true;
 
     vm.logout = logout;

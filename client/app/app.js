@@ -30,9 +30,12 @@ angular.module('lypo.app', [
     return true;
   });
 
+  // Set current account from Settings
+  Auth.account = Settings.account;
+
   // Redirect to login if route requires auth and you're not logged in
   $rootScope.$on('$stateChangeStart', function (event, next) {
-    if(next.authenticate && !Settings.account) {
+    if(next.authenticate && !Auth.account) {
       $location.path('/login');
     }
   });

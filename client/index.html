@@ -182,11 +182,12 @@
         var initInjector = angular.injector(['ng', 'ngCookies']);
         var $http = initInjector.get('$http');
         var $cookieStore = initInjector.get('$cookieStore');
+        var settings = {};
 
         $http
           .get('/settings')
           .then(function (response) {
-            var settings = response.data;
+            settings = response.data;
             var sessionToken = $cookieStore.get(settings.tokenName);
             if(sessionToken) {
               var request = {
@@ -201,23 +202,24 @@
               $http(request)
                 .success(function (account) {
                   settings.account = account;
-                  angular.module('lypo.settings', []).constant('Settings', settings);
-                  angular.element(document).ready(function () {
-                    angular.bootstrap(document, ['lypo.app']);
-                  });
+                  bootstrap();
                 })
                 .error(function (err) {
-                  // TODO: add error handling
                   console.log(err);
+                  bootstrap();
                 });
             } else {
-              angular.module('lypo.settings', []).constant('Settings', settings);
-              angular.element(document).ready(function () {
-                angular.bootstrap(document, ['lypo.app']);
-              });
+              bootstrap();
             }
           }
         );
+
+        function bootstrap() {
+          angular.module('lypo.settings', []).constant('Settings', settings);
+          angular.element(document).ready(function () {
+            angular.bootstrap(document, ['lypo.app']);
+          });
+        }
       })();
     </script>
 </body>
