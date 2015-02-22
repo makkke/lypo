@@ -38,5 +38,6 @@ angular.module('lypo.app', [
   });
 })
 .constant('angularMomentConfig', {
-  preprocess: 'utc'
+  //preprocess: 'unix',
+  // timezone: 'Europe/London'
 });

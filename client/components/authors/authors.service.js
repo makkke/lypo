@@ -5,7 +5,7 @@
     .module('lypo.app')
     .factory('Authors', Authors);
 
-  function Authors(Restangular, Settings) {
+  function Authors(Restangular) {
     var route = 'authors';
 
     var service = {
