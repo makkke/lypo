@@ -23,6 +23,7 @@ module.exports = function(config) {
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/restangular/dist/restangular.js',
       'client/bower_components/angular-moment/angular-moment.js',
+      'client/bower_components/angular-ui-select/dist/select.js',
       'client/app/app.js',
       'client/app/**/*.js',
       'client/components/**/*.js',

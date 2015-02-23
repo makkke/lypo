@@ -26,17 +26,29 @@ exports.index = function (req, res) {
 exports.create = function(req, res) {
   var author = new Author(req.body);
   author.accountId = req.account._id;
-  Author.find({ account: author.account }, function (err, duplicate) {
-    if(err) { return handleError(res, err); }
-    if(!duplicate) {
-      author.save(function (err) {
-        if(err) { return handleError(res, err); }
-        return res.json(201, author);
-      });
-    } else {
-      return res.json(200, {});
-    }
-  });
+  console.log('author:', author);
+  Author
+    .findOne()
+    .and([
+      { accountId: req.account._id },
+      { account: { $exists: true } },
+      { account: author.account }
+    ])
+    // .where('account').exists()
+    // .where('account').equals(author.account)
+    //.populate('account')
+    .exec(function (err, duplicate) {
+      if(err) { return handleError(res, err); }
+      console.log('duplicate:', duplicate);
+      if(!duplicate) {
+        author.save(function (err) {
+          if(err) { return handleError(res, err); }
+          return res.json(201, author);
+        });
+      } else {
+        return res.json(200, {});
+      }
+    });
 };
 
 // // Updates an existing thing in the DB.

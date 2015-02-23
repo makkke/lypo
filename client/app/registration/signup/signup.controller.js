@@ -21,11 +21,13 @@
 
     function signup(form) {
       if(form.$valid) {
-        Auth.signup(vm.account)
-          .then( function() {
-            $location.path('/timeline');
+        Auth
+          .signup(vm.account)
+          .then(function () {
+            $location.url('timeline');
           })
           .catch(function (err) {
+            console.log(err);
             err = err.data;
             $scope.errors = {};
 

@@ -6,12 +6,10 @@
     .factory('Auth', Auth);
 
   function Auth($http, Accounts, $cookieStore, $q, Settings, Restangular) {
-    var account;
-
     var service = {
-      account: account,
-      getHeaders: getHeaders,
+      account: {},
 
+      getHeaders: getHeaders,
       login: login,
       logout: logout,
       signup: signup,
@@ -40,7 +38,7 @@
           Accounts
             .me()
             .then(function (me) {
-              account = me;
+              service.account = me;
               deferred.resolve();
             });
         })
@@ -57,7 +55,7 @@
      */
     function logout() {
       $cookieStore.remove(Settings.tokenName);
-      account = {};
+      service.account = {};
     }
 
     /**
@@ -132,8 +130,11 @@
           Accounts
             .me()
             .then(function (me) {
-              account = me;
+              service.account = me;
               deferred.resolve();
+            })
+            .catch(function (err) {
+              console.log(err);
             });
         })
         .error(function (err) {

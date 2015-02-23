@@ -37,7 +37,7 @@
 
     function logout() {
       Auth.logout();
-      $location.path('/login');
+      $location.url('login');
     }
 
     function isActive(route) {
