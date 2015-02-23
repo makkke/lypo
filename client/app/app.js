@@ -7,6 +7,7 @@ angular.module('lypo.app', [
   'ngSanitize',
   'ui.router',
   'ui.bootstrap',
+  'ui.select',
   'restangular',
   'angularMoment'
 ])

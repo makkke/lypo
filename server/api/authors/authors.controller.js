@@ -4,8 +4,12 @@ var _ = require('lodash');
 var Author = require('./author.model');
 
 exports.index = function (req, res) {
-  Author.find({ accountId: req.account._id }, function (err, authors) {
+  Author
+  .find({ accountId: req.account._id })
+  .populate('account')
+  .exec(function (err, authors) {
     if(err) { return handleError(res, err); }
+    var results = [];
     return res.json(200, authors);
   });
 };
@@ -22,9 +26,16 @@ exports.index = function (req, res) {
 exports.create = function(req, res) {
   var author = new Author(req.body);
   author.accountId = req.account._id;
-  author.save(function (err) {
+  Author.find({ account: author.account }, function (err, duplicate) {
     if(err) { return handleError(res, err); }
-    return res.json(201, author);
+    if(!duplicate) {
+      author.save(function (err) {
+        if(err) { return handleError(res, err); }
+        return res.json(201, author);
+      });
+    } else {
+      return res.json(200, {});
+    }
   });
 };
 

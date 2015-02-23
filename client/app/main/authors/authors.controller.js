@@ -12,6 +12,7 @@
     vm.loading = true;
 
     vm.openCreate = openCreate;
+    vm.openSearch = openSearch;
     vm.isEmpty = isEmpty;
 
     activate();
@@ -23,6 +24,7 @@
     }
 
     function loadAuthors() {
+      vm.loading = true;
       Authors
         .query()
         .then(function (authors) {
@@ -38,8 +40,20 @@
         controllerAs: 'vm'
       });
 
-      modalInstance.result.then(function (author) {
-        vm.authors.push(author);
+      modalInstance.result.then(function () {
+        loadAuthors();
+      });
+    }
+
+    function openSearch() {
+      var modalInstance = $modal.open({
+        templateUrl: 'app/main/authors/search/author.search.html',
+        controller: 'AuthorSearchCtrl',
+        controllerAs: 'vm'
+      });
+
+      modalInstance.result.then(function () {
+        loadAuthors();
       });
     }
 

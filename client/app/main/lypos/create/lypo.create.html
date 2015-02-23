@@ -13,7 +13,7 @@
       </div>
       <div class="form-group">
         <label>By</label>
-        <select class="form-control" ng-model="vm.lypo.author" ng-options="author.fullName for author in vm.authors | orderBy:'fullName'">
+        <select class="form-control" ng-model="vm.lypo.author" ng-options="author.fullName || author.account.fullName for author in vm.authors | orderBy:'fullName'">
           <option value="">-- Select Author --</option>
         </select>
       </div>

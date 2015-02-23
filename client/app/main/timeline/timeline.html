@@ -17,8 +17,11 @@
         <h2>{{ group.day }}</h2>
         <div class="list-group" ng-repeat="lypo in group.lypos | orderBy:'-at'">
           <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">{{ lypo.author.fullName }} <small>{{ lypo.at | amDateFormat:'Ha' }}</small></h4>
-            <p class="list-group-item-text">{{ lypo.text }}</p>
+            <h3 class="list-group-item-heading">{{ lypo.text }} <small>at {{ lypo.at | amDateFormat:'ha' }}</small></h3>
+            <div ng-if="!lypo.isOwned()">
+              <p class="list-group-item-text">said by: {{ lypo.author.fullName }}</p>
+              <p class="list-group-item-text">creator: {{ lypo.creator.fullName }}</p>
+            </div>
           </a>
         </div>
       </div>

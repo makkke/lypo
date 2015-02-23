@@ -8,6 +8,7 @@ var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var AccountSchema = new Schema({
   fullName: { type: String, required: true },
+  username: { type: String, required: true },
   email: { type: String, lowercase: true, required: true },
   hashedPassword: { type: String, required: true },
   provider: String,
@@ -42,14 +43,6 @@ AccountSchema
  * Validations
  */
 
-// Validate empty email
-AccountSchema
-  .path('email')
-  .validate(function (email) {
-    if(authTypes.indexOf(this.provider) !== -1) return true;
-    return email.length;
-  }, 'Email cannot be blank');
-
 // Validate empty password
 AccountSchema
   .path('hashedPassword')
@@ -57,6 +50,14 @@ AccountSchema
     if(authTypes.indexOf(this.provider) !== -1) return true;
     return hashedPassword.length;
   }, 'Password cannot be blank');
+
+// Validate empty email
+AccountSchema
+  .path('email')
+  .validate(function (email) {
+    if(authTypes.indexOf(this.provider) !== -1) return true;
+    return email.length;
+  }, 'Email cannot be blank');
 
 // Validate email is not taken
 AccountSchema
@@ -72,6 +73,28 @@ AccountSchema
       respond(true);
     });
 }, 'The specified email address is already in use.');
+
+// Validate empty username
+AccountSchema
+  .path('username')
+  .validate(function (username) {
+    return username.length;
+  }, 'Username cannot be blank');
+
+// Validate email is not taken
+AccountSchema
+  .path('username')
+  .validate(function (value, respond) {
+    var self = this;
+    this.constructor.findOne({ username: value }, function (err, account) {
+      if(err) throw err;
+      if(account) {
+        if(self.id === account.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'The specified username is already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;

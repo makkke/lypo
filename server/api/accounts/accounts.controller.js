@@ -1,6 +1,7 @@
 'use strict';
 
 var Account = require('./account.model');
+var Author = require('../authors/author.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
@@ -9,13 +10,30 @@ var validationError = function (res, err) {
   return res.json(422, err);
 };
 
+exports.index = function (req, res) {
+  console.log('poop');
+  Account.find(function (err, accounts) {
+    if(err) { return validationError(res, err); }
+    return res.json(200, accounts);
+  });
+};
+
 exports.create = function (req, res, next) {
   var account = new Account(req.body);
   account.provider = 'local';
-  account.save(function (err, account) {
+  account.save(function (err) {
     if(err) return validationError(res, err);
-    var token = jwt.sign({ _id: account._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-    res.json({ token: token });
+    // create default author
+    var author = new Author({
+      accountId: account._id,
+      account: account._id
+    });
+    author.save(function (err) {
+      if(err) return validationError(res, err);
+      console.log(author);
+      var token = jwt.sign({ _id: account._id }, config.secrets.session, { expiresInMinutes: 60*5 });
+      res.json({ token: token });
+    })
   });
 };
 

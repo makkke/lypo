@@ -36,6 +36,10 @@
     function extendModel(model) {
       model.at = moment(model.at);
 
+      model.isOwned = function () {
+        return model.creator.fullName === model.author.fullName;
+      };
+
       return model;
     }
   }

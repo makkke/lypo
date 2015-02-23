@@ -2,15 +2,55 @@
 
 var _ = require('lodash');
 var Lypo = require('./lypo.model');
+var Author = require('../authors/author.model');
 
 exports.index = function (req, res) {
-  Lypo
-    .find({ accountId: req.account._id })
-    .populate('author')
-    .exec(function (err, lypos) {
-      if(err) { return handleError(res, err); }
-      return res.json(200, lypos);
+  Author
+    .find({ account: req.account._id }, function (err, authors) {
+      Lypo
+        .find()
+        .or([{ accountId: req.account._id }, { author: { $in: authors } }])
+        .populate('author')
+        .populate('accountId')
+        .exec(function (err, lypos) {
+          if(err) { return handleError(res, err); }
+          Lypo.populate(lypos, { path: 'author.account', model: 'Account' }, function (err, lypos) {
+            if(err) { return handleError(res, err); }
+            return res.json(200, lypos);
+          })
+        })
     });
+
+  // Lypo
+  //   // // .find({ accountId: req.account._id })
+  //   // // .and()
+  //   // .find()
+  //   // // .where('author.account').equals(req.account._id)
+  //   // .populate('author')
+  //   // .exec(function (err, lypos) {
+  //   //   console.log(lypos);
+  //   //   if(err) { return handleError(res, err); }
+  //   //   Lypo.populate(lypos, { path: 'author.account', model: 'Account' }, function (err, lypos) {
+  //   //     if(err) { return handleError(res, err); }
+  //   //     return res.json(200, lypos);
+  //   //   })
+  //   // });
+  //   //
+  //   // .find({ accountId: req.account._id })
+  //   // .and()
+  //   .find({ accountId: req.account._id })
+  //   // .where('author.account').equals(req.account._id)
+  //   // .populate('author', null, { account: req.account._id })
+  //   .populate('author')
+  //   // .or({ accountId: req.account._id })
+  //   .exec(function (err, lypos) {
+  //     console.log(lypos);
+  //     if(err) { return handleError(res, err); }
+  //     Lypo.populate(lypos, { path: 'author.account', model: 'Account' }, function (err, lypos) {
+  //       if(err) { return handleError(res, err); }
+  //       return res.json(200, lypos);
+  //     })
+  //   });
 };
 
 // // Get a single thing

@@ -9,18 +9,25 @@
     var route = 'accounts';
 
     var service = {
-      me: me
+      me: me,
+      query: query
     };
 
     return service;
 
     ////////////////////////////////
-    
+
     function me() {
       return Restangular
         .one(route, 'me')
         .get();
     }
+
+    function query() {
+      return Restangular
+        .all(route)
+        .getList();
+    }
   }
-  
+
 })();

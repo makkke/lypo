@@ -1,6 +1,6 @@
 .page-content
   position: relative
-  
+
 .page-btn--create
   display: inline-block
   line-height: 0.8em
@@ -10,6 +10,42 @@
   height: 40px
   top: 0
   right: 20px
+  padding-top: 0px
+  padding-bottom: 0px
+  &:after
+    background-color: $green-color
+    border-radius: 100%
+    content: ""
+    display: block
+    height: 40px
+    left: 0
+    position: absolute
+    top: 0
+    width: 40px
+  i
+    background: none
+    border-radius: 100%
+    color: $white-color
+    cursor: pointer
+    height: 40px
+    left: 0
+    line-height: 40px
+    position: absolute
+    text-align: center
+    top: 0
+    transition: all 0.3s ease-in-out 0s
+    width: 40px
+    z-index: 1
+
+.page-btn--search
+  display: inline-block
+  line-height: 0.8em
+  margin: 0
+  position: absolute
+  width: 40px
+  height: 40px
+  top: 0
+  right: 70px
   padding-top: 0px
   padding-bottom: 0px
   &:after

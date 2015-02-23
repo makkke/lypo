@@ -5,7 +5,7 @@
     .module('lypo.app')
     .factory('Auth', Auth);
 
-  function Auth($http, Accounts, $cookieStore, $q, Settings) {
+  function Auth($http, Accounts, $cookieStore, $q, Settings, Restangular) {
     var account;
 
     var service = {
@@ -34,6 +34,9 @@
         .post('/auth/local', credentials)
         .success(function (data) {
           $cookieStore.put(Settings.tokenName, data.token);
+          Restangular.addFullRequestInterceptor(function () {
+            return getHeaders();
+          });
           Accounts
             .me()
             .then(function (me) {
@@ -123,6 +126,9 @@
         .post('api/accounts', account)
         .success(function (data) {
           $cookieStore.put(Settings.tokenName, data.token);
+          Restangular.addFullRequestInterceptor(function () {
+            return getHeaders();
+          });
           Accounts
             .me()
             .then(function (me) {

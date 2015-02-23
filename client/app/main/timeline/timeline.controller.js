@@ -23,9 +23,11 @@
     }
 
     function loadLypos() {
+      vm.loading = true;
       Lypos
         .query()
         .then(function (lypos) {
+          console.log(lypos);
           vm.lypos = lypos;
           vm.empty = lypos.length === 0;
           sortGroups();
@@ -40,9 +42,8 @@
         controllerAs: 'vm'
       });
 
-      modalInstance.result.then(function (lypo) {
-        vm.lypos.push(lypo);
-        sortGroups();
+      modalInstance.result.then(function () {
+        loadLypos();
       });
     }
 
