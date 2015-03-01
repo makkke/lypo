@@ -5,11 +5,17 @@ var Author = require('./author.model');
 
 exports.index = function (req, res) {
   Author
-  .find({ accountId: req.account._id })
+  .find({ creator: req.account._id })
   .populate('account')
   .exec(function (err, authors) {
     if(err) { return handleError(res, err); }
-    var results = [];
+    authors = _.map(authors, function (author) {
+      if(author.account) {
+        author.fullName = author.account.fullName;
+        author.account = author.account._id;
+      }
+      return author;
+    });
     return res.json(200, authors);
   });
 };
@@ -25,21 +31,16 @@ exports.index = function (req, res) {
 
 exports.create = function(req, res) {
   var author = new Author(req.body);
-  author.accountId = req.account._id;
-  console.log('author:', author);
+  author.creator = req.account._id;
   Author
     .findOne()
     .and([
-      { accountId: req.account._id },
+      { creator: author.creator },
+      { account: author.account },
       { account: { $exists: true } },
-      { account: author.account }
     ])
-    // .where('account').exists()
-    // .where('account').equals(author.account)
-    //.populate('account')
     .exec(function (err, duplicate) {
       if(err) { return handleError(res, err); }
-      console.log('duplicate:', duplicate);
       if(!duplicate) {
         author.save(function (err) {
           if(err) { return handleError(res, err); }

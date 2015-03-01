@@ -11,7 +11,6 @@ var validationError = function (res, err) {
 };
 
 exports.index = function (req, res) {
-  console.log('poop');
   Account.find(function (err, accounts) {
     if(err) { return validationError(res, err); }
     return res.json(200, accounts);
@@ -25,12 +24,11 @@ exports.create = function (req, res, next) {
     if(err) return validationError(res, err);
     // create default author
     var author = new Author({
-      accountId: account._id,
+      creator: account._id,
       account: account._id
     });
     author.save(function (err) {
       if(err) return validationError(res, err);
-      console.log(author);
       var token = jwt.sign({ _id: account._id }, config.secrets.session, { expiresInMinutes: 60*5 });
       res.json({ token: token });
     })
@@ -86,10 +84,7 @@ exports.create = function (req, res, next) {
  * Get my info
  */
 exports.me = function (req, res, next) {
-  var accountId = req.account._id;
-  Account.findOne({
-    _id: accountId
-  }, '-salt -hashedPassword', function (err, account) {
+  Account.findOne({ _id: req.account._id }, '-salt -hashedPassword', function (err, account) {
     if(err) return next(err);
     if(!account) return res.json(401);
     res.json(account);

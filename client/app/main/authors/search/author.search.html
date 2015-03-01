@@ -1,18 +1,17 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h3 class="modal-title text-center">Create New Author</h3>
+    <h3 class="modal-title text-center">Find Author</h3>
   </div>
 
   <form role="form" novalidate name="form" class="form" ng-submit="vm.create(form)">
     <div class="modal-body">
       <ui-select ng-model="vm.account"
                  theme="bootstrap"
-                 reset-search-input="false"
                  style="width: 100%;">
       <ui-select-match placeholder="Find by Username">{{$select.selected.username}}</ui-select-match>
-      <ui-select-choices repeat="account in vm.accounts">
-        <div ng-bind-html="account.username | highlight: $select.search"></div>
-        <span>{{ ' ' + account.fullName }}</span>
+      <ui-select-choices repeat="account in vm.accounts | filter: $select.search">
+        <div ng-bind-html="'@' + account.username | highlight: $select.search"></div>
+        <span>{{ account.fullName }}</span>
       </ui-select-choices>
     </ui-select>
     </div>

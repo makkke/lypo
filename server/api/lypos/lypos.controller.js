@@ -9,13 +9,20 @@ exports.index = function (req, res) {
     .find({ account: req.account._id }, function (err, authors) {
       Lypo
         .find()
-        .or([{ accountId: req.account._id }, { author: { $in: authors } }])
+        .or([{ creator: req.account._id }, { author: { $in: authors } }])
         .populate('author')
-        .populate('accountId')
+        .populate('creator', 'fullName _id')
         .exec(function (err, lypos) {
           if(err) { return handleError(res, err); }
-          Lypo.populate(lypos, { path: 'author.account', model: 'Account' }, function (err, lypos) {
+          Lypo.populate(lypos, { path: 'author.account', select: 'fullName _id', model: 'Account' }, function (err, lypos) {
             if(err) { return handleError(res, err); }
+            lypos = _.map(lypos, function (lypo) {
+              if(lypo.author.account) {
+                lypo.author.fullName = lypo.author.account.fullName;
+                lypo.author.account = lypo.author.account._id;
+              }
+              return lypo;
+            });
             return res.json(200, lypos);
           })
         })
@@ -64,16 +71,10 @@ exports.index = function (req, res) {
 
 exports.create = function (req, res) {
   var lypo = new Lypo(req.body);
-  lypo.accountId = req.account._id;
+  lypo.creator = req.account._id;
   lypo.save(function (err) {
     if(err) { return handleError(res, err); }
-    Lypo
-      .findById(lypo._id)
-      .populate('author')
-      .exec(function (err, lypo) {
-        if(err) { return handleError(res, err); }
-        return res.json(201, lypo);
-      });
+    return res.json(201, lypo);
   });
 };
 

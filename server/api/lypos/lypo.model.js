@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var LypoSchema = new Schema({
-  accountId: { type: Schema.Types.ObjectId, ref: 'Account', required: true },
+  creator: { type: Schema.Types.ObjectId, ref: 'Account', required: true },
   author: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
   text: { type: String, required: true },
   at: { type: Date, required: true }
@@ -16,7 +16,6 @@ LypoSchema.set('toJSON', {
     lypo.id = lypo._id;
     delete lypo._id;
     delete lypo.__v;
-    lypo.creator = { fullName: lypo.accountId.fullName };
   }
 });
 

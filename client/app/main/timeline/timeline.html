@@ -10,7 +10,7 @@
 
       <div class="jumbotron text-center" ng-if="vm.isEmpty() && !vm.loading">
         <h2>No lypos so far? Hard to believe...</h2>
-        <p><a class="btn btn-success btn-lg" href role="button" ng-click="vm.openCreate()">Create one</a></p>
+        <p><a class="btn btn-success btn-lg" href role="button" ng-click="vm.openCreate()">Let's Create One</a></p>
       </div>
 
       <div ng-repeat="group in vm.groups | orderBy:'-day'" ng-if="!vm.isEmpty() && !vm.loading">

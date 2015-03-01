@@ -37,7 +37,7 @@
       model.at = moment(model.at);
 
       model.isOwned = function () {
-        return model.creator.fullName === model.author.fullName;
+        return model.creator.id === model.author.account;
       };
 
       return model;
