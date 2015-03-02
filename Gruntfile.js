@@ -387,18 +387,18 @@ module.exports = function (grunt) {
         connectCommits: false,
         message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
       },
-      heroku: {
+      qa: {
         options: {
-          remote: 'heroku',
-          branch: 'master'
+          remote: 'git@heroku.com:lypo-qa.git',
+          branch: 'master',
         }
       },
-      openshift: {
+      pr: {
         options: {
-          remote: 'openshift',
-          branch: 'master'
+          remote: 'git@heroku.com:lypo.git',
+          branch: 'master',
         }
-      }
+      },
     },
 
     // Run some tasks in parallel to speed up the build process

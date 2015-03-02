@@ -12,6 +12,7 @@
     vm.loading = true;
 
     vm.openCreate = openCreate;
+    vm.openRemove = openRemove;
     vm.isEmpty = isEmpty;
 
     activate();
@@ -27,7 +28,6 @@
       Lypos
         .query()
         .then(function (lypos) {
-          console.log(lypos);
           vm.lypos = lypos;
           vm.empty = lypos.length === 0;
           sortGroups();
@@ -40,6 +40,19 @@
         templateUrl: 'app/main/lypos/create/lypo.create.html',
         controller: 'LypoCreateCtrl',
         controllerAs: 'vm'
+      });
+
+      modalInstance.result.then(function () {
+        loadLypos();
+      });
+    }
+
+    function openRemove(lypo) {
+      var modalInstance = $modal.open({
+        templateUrl: 'app/main/lypos/remove/lypo.remove.html',
+        controller: 'LypoRemoveCtrl',
+        controllerAs: 'vm',
+        resolve: { lypo: function () { return lypo; } }
       });
 
       modalInstance.result.then(function () {

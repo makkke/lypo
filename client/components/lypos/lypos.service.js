@@ -5,14 +5,15 @@
     .module('lypo.app')
     .factory('Lypos', Lypos);
 
-  function Lypos(Restangular) {
+  function Lypos(Restangular, Auth) {
     var route = 'lypos';
 
     Restangular.extendModel(route, extendModel);
 
     var service = {
       query: query,
-      create: create
+      create: create,
+      remove: remove,
     };
 
     return service;
@@ -33,11 +34,21 @@
         .post(model);
     }
 
+    function remove(lypo) {
+      return lypo.remove();
+    }
+
     function extendModel(model) {
       model.at = moment(model.at);
 
-      model.isOwned = function () {
-        return model.creator.id === model.author.account;
+      model.isAuthored = function () {
+        // return model.creator.id === model.author.account;
+        return model.author.account === Auth.account.id;
+      };
+
+      model.isCreated = function () {
+        // return model.creator.id === model.author.account;
+        return model.creator.id === Auth.account.id;
       };
 
       return model;
