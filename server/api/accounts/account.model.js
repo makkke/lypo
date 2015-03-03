@@ -11,9 +11,12 @@ var AccountSchema = new Schema({
   username: { type: String, required: true },
   email: { type: String, lowercase: true, required: true },
   hashedPassword: { type: String, required: true },
-  provider: String,
   salt: { type: String, required: true },
+  provider: String,
   google: {},
+  avatar: {
+    url: String
+  }
 });
 
 /**

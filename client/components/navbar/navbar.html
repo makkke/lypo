@@ -10,14 +10,14 @@
       <a href="/" class="navbar-brand">Lypo</a>
     </div>
     <div collapse="vm.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav text-center">
         <li ng-repeat="item in vm.menu" ng-class="{ active: vm.isActive(item.link) }">
           <a ng-href="{{ item.link }}" ng-click="vm.isCollapsed = true">{{item.title}}</a>
         </li>
       </ul>
 
-      <ul class="nav navbar-nav navbar-right">
-        <li><p class="navbar-text">Hello {{ vm.account.fullName }}</p></li>
+      <ul class="nav navbar-nav navbar-right text-center">
+        <li><p class="navbar-text"><img ng-src="{{ vm.account.avatar.url + '?s=30&d=mm' }}" class="profile-image img-circle"> {{ vm.account.fullName }}</p></li>
         <li ng-class="{ active: vm.isActive('/logout') }"><a href="" ng-click="vm.logout()">Logout</a></li>
       </ul>
     </div>

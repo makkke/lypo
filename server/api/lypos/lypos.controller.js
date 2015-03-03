@@ -11,14 +11,15 @@ exports.index = function (req, res) {
         .find()
         .or([{ creator: req.account._id }, { author: { $in: authors } }])
         .populate('author')
-        .populate('creator', 'fullName _id')
+        .populate('creator', '_id fullName avatar')
         .exec(function (err, lypos) {
           if(err) { return serverError(res, err); }
-          Lypo.populate(lypos, { path: 'author.account', select: 'fullName _id', model: 'Account' }, function (err, lypos) {
+          Lypo.populate(lypos, { path: 'author.account', select: '_id fullName avatar', model: 'Account' }, function (err, lypos) {
             if(err) { return serverError(res, err); }
             lypos = _.map(lypos, function (lypo) {
               if(lypo.author.account) {
                 lypo.author.fullName = lypo.author.account.fullName;
+                lypo.author.avatar = lypo.author.account.avatar;
                 lypo.author.account = lypo.author.account._id;
               }
               return lypo;

@@ -7,7 +7,10 @@ var mongoose = require('mongoose'),
 var AuthorSchema = new Schema({
   creator: { type: Schema.Types.ObjectId, ref: 'Account' },
   account: { type: Schema.Types.ObjectId, ref: 'Account' },
-  fullName: String
+  fullName: String,
+  avatar: {
+    url: String
+  }
 });
 
 AuthorSchema.set('toJSON', {

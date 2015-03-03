@@ -21,26 +21,19 @@
         <h2>{{ group.day }}</h2>
         <div class="list-group lypo-item" ng-repeat="lypo in group.lypos | orderBy:'-at'">
           <a href="#" class="list-group-item">
-            <h3 class="list-group-item-heading">{{ lypo.text }} <small>at {{ lypo.at | amDateFormat:'ha' }}</small></h3>
-
-            <div ng-if="lypo.isCreated()">
-              <p class="list-group-item-text">said by: {{ lypo.author.fullName }}</p>
-            </div>
-            <div ng-if="lypo.isAuthored()">
-              <p class="list-group-item-text">from: {{ lypo.creator.fullName }}</p>
-            </div>
-
             <div class="lypo-item__remove" ng-click="vm.openRemove(lypo)" ng-if="lypo.isCreated()">
               <i class="fa fa-trash"></i>
             </div>
 
-  <!--           <div ng-if="!lypo.isAuthored()">
-              <p class="list-group-item-text">said by: {{ lypo.author.fullName }}</p>
-              <p class="list-group-item-text">creator: {{ lypo.creator.fullName }}</p>
+            <h3 class="list-group-item-heading text-center">{{ lypo.text }}</h3>
+            <h3 class="list-group-item-heading text-center"><small>at {{ lypo.at | amDateFormat:'ha' }}</small></h3>
+
+            <div>
+              <p class="list-group-item-text">
+                <span popover="{{ lypo.author.fullName }}" popover-trigger="click" popover-placement="right">said by <img class="img-circle" ng-src="{{ lypo.author.avatar.url + '?s=20&d=mm' }}"></span>
+                <span class="pull-right" popover="{{ lypo.creator.fullName }}" popover-trigger="click" popover-placement="left">created by <img class="img-circle" ng-src="{{ lypo.creator.avatar.url + '?s=20&d=mm' }}"></span>
+              </p>
             </div>
-            <div class="lypo-item__remove" ng-click="vm.openRemove(lypo)" ng-if="lypo.isCreated()">
-              <i class="fa fa-trash"></i>
-            </div> -->
           </a>
         </div>
       </div>
