@@ -12,17 +12,18 @@ var _         = require('lodash'),
     crypto    = require('crypto'),
     Account   = require('../server/api/accounts/account.model');
 
-var config = qaConfig;
+var config = prConfig;
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 Account.find(function (err, accounts) {
   if(err) { return console.log(err); }
 
   _.each(accounts, function (account) {
-    var hash = crypto.createHash('md5').update(account.email).digest('hex');
-    account.avatar.url = 'http://www.gravatar.com/avatar/' + hash;
-    account.save();
+    // var hash = crypto.createHash('md5').update(account.email).digest('hex');
+    // account.avatar.url = 'http://www.gravatar.com/avatar/' + hash;
+    // account.save();
   });
+  console.log(accounts);
 
   // process.exit(0);
 });

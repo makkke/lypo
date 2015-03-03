@@ -18,12 +18,17 @@ exports.index = function (req, res) {
             if(err) { return serverError(res, err); }
             lypos = _.map(lypos, function (lypo) {
               if(lypo.author.account) {
-                lypo.author.fullName = lypo.author.account.fullName;
-                lypo.author.avatar = lypo.author.account.avatar;
-                lypo.author.account = lypo.author.account._id;
+                lypo.author = {
+                  fullName: lypo.author.account.fullName,
+                  avatar: {
+                    url: lypo.author.account.avatar.url
+                  },
+                  account: lypo.author.account._id,
+                }
               }
               return lypo;
             });
+            // console.log(lypos);
             return res.json(200, lypos);
           })
         })
