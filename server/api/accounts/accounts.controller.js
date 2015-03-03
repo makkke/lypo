@@ -2,6 +2,7 @@
 
 var Account = require('./account.model');
 var Author = require('../authors/author.model');
+var crypto = require('crypto');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
@@ -20,6 +21,8 @@ exports.index = function (req, res) {
 exports.create = function (req, res, next) {
   var account = new Account(req.body);
   account.provider = 'local';
+  var hash = crypto.createHash('md5').update(account.email).digest('hex');
+  account.avatar.url = 'http://www.gravatar.com/avatar/' + hash;
   account.save(function (err) {
     if(err) return validationError(res, err);
     // create default author
