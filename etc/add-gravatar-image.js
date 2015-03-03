@@ -12,7 +12,7 @@ var _         = require('lodash'),
     crypto    = require('crypto'),
     Account   = require('../server/api/accounts/account.model');
 
-var config = devConfig;
+var config = qaConfig;
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 Account.find(function (err, accounts) {
