@@ -6,10 +6,13 @@
 
 var _         = require('lodash'),
     mongoose  = require('mongoose'),
-    config    = require('../server/config/environment'),
+    devConfig = require('../server/config/environment/development'),
+    qaConfig  = require('../server/config/environment/qa'),
+    prConfig  = require('../server/config/environment/production'),
     crypto    = require('crypto'),
     Account   = require('../server/api/accounts/account.model');
 
+var config = devConfig;
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 Account.find(function (err, accounts) {
