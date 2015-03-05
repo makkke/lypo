@@ -12,7 +12,7 @@ angular.module('lypo.app', [
   'angularMoment'
 ])
 .config(function ($urlRouterProvider, $locationProvider) {
-  $urlRouterProvider.otherwise('/timeline');
+  $urlRouterProvider.otherwise('/lypos');
   $locationProvider.html5Mode(true);
 })
 .run(function ($rootScope, $location, Settings, Restangular, Auth) {

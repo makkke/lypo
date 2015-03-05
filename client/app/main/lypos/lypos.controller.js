@@ -3,9 +3,9 @@
 
   angular
     .module('lypo.app')
-    .controller('TimelineCtrl', TimelineCtrl);
+    .controller('LyposCtrl', LyposCtrl);
 
-  function TimelineCtrl($scope, $modal, Lypos) {
+  function LyposCtrl($scope, $modal, Lypos) {
     var vm = this;
 
     vm.groups = [];

@@ -10,10 +10,10 @@ angular.module('lypo.app')
         controllerAs: 'vm',
         authenticate: true
       })
-      .state('main.timeline', {
-        url: '/timeline',
-        templateUrl: 'app/main/timeline/timeline.html',
-        controller: 'TimelineCtrl',
+      .state('main.lypos', {
+        url: '/lypos',
+        templateUrl: 'app/main/lypos/lypos.html',
+        controller: 'LyposCtrl',
         controllerAs: 'vm',
         authenticate: true
       })
