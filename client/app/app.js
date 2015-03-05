@@ -22,6 +22,11 @@ angular.module('lypo.app', [
     return Auth.getHeaders();
   });
   Restangular.setErrorInterceptor(function (response) {
+    console.log(response);
+    if(response.status >= 500) {
+      console.log('server error');
+      return false;
+    }
     if(response.status === 401) {
       Auth.logout();
       $location.path('/login');

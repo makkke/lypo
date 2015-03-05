@@ -6,9 +6,21 @@
     .controller('SignupCtrl',
 
   function SignupCtrl($scope, Auth, $location, $window) {
-    var vm = this;
+    var vm = this,
+        title = 'Log In | Lypo',
+        signupButtonText = 'Create an Account';
 
-    vm.account = {};
+    vm.account = {
+      fullName: 'Slava Ivanov',
+      username: 'vivanov',
+      email: 'slava.eth@gmail.com',
+      password: 'testishe123'
+    };
+    vm.loading = false;
+    vm.signupButtonText = signupButtonText;
+    vm.emailError = false;
+    vm.usernameError = false;
+
     vm.signup = signup;
     vm.loginOauth = loginOauth;
 
@@ -17,31 +29,48 @@
     ////////////////////////////////
 
     function activate() {
+      $window.document.title = title;
     }
 
     function signup(form) {
       if(form.$valid) {
+        startLoading();
         Auth
           .signup(vm.account)
           .then(function () {
+            stopLoading();
             $location.url('timeline');
           })
           .catch(function (err) {
-            console.log(err);
-            err = err.data;
-            $scope.errors = {};
-
-            // Update validity of form fields that match the mongoose errors
-            angular.forEach(err.errors, function (error, field) {
-              form[field].$setValidity('mongoose', false);
-              $scope.errors[field] = error.message;
-            });
+            stopLoading();
+            handleError(err);
           });
       }
     }
 
     function loginOauth(provider) {
       $window.location.href = '/auth/' + provider;
+    }
+
+    function startLoading() {
+      vm.loading = true;
+      vm.error = false;
+      vm.loginButtonText = 'Signing In...';
+    }
+
+    function stopLoading() {
+      vm.loading = false;
+      vm.signupButtonText = signupButtonText;
+    }
+
+    function handleError(err) {
+      console.log(err);
+      if(err.errors.email) {
+        vm.emailError = true;
+      }
+      if(err.errors.username) {
+        vm.usernameError = true;
+      }
     }
   });
 })();

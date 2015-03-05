@@ -67,15 +67,15 @@ AccountSchema
   .path('email')
   .validate(function (value, respond) {
     var self = this;
-    this.constructor.findOne({ email: value }, function (err, user) {
+    this.constructor.findOne({ email: value }, function (err, account) {
       if(err) throw err;
-      if(user) {
-        if(self.id === user.id) return respond(true);
+      if(account) {
+        if(self.id === account.id) return respond(true);
         return respond(false);
       }
       respond(true);
     });
-}, 'The specified email address is already in use.');
+}, 'duplicate');
 
 // Validate empty username
 AccountSchema
@@ -97,7 +97,7 @@ AccountSchema
       }
       respond(true);
     });
-}, 'The specified username is already in use.');
+}, 'duplicate');
 
 var validatePresenceOf = function(value) {
   return value && value.length;

@@ -114,7 +114,7 @@
     /**
      * Creates a new account
      *
-     * @param  {Object}   user     - user info
+     * @param  {Object} account
      * @return {Promise}
      */
     function signup(account) {
@@ -138,7 +138,7 @@
             });
         })
         .error(function (err) {
-          this.logout();
+          logout();
           deferred.reject(err);
         });
 
