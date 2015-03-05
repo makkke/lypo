@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose'),
     timestamps = require('mongoose-timestamp'),
+    softDelete = require('mongoose-softdelete'),
     Schema = mongoose.Schema;
 
 var AuthorSchema = new Schema({
@@ -22,5 +23,6 @@ AuthorSchema.set('toJSON', {
 });
 
 AuthorSchema.plugin(timestamps);
+AuthorSchema.plugin(softDelete);
 
 module.exports = mongoose.model('Author', AuthorSchema);

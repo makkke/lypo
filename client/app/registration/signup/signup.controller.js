@@ -10,12 +10,7 @@
         title = 'Log In | Lypo',
         signupButtonText = 'Create an Account';
 
-    vm.account = {
-      fullName: 'Slava Ivanov',
-      username: 'vivanov',
-      email: 'slava.eth@gmail.com',
-      password: 'testishe123'
-    };
+    vm.account = {};
     vm.loading = false;
     vm.signupButtonText = signupButtonText;
     vm.emailError = false;

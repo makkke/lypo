@@ -10,9 +10,11 @@
             placeholder="What's your name?"
             ng-model="vm.account.fullName"
             autofocus
-            required>
+            required
+            minlength="4">
           <div ng-show="form.$submitted || form.fullName.$dirty">
             <p class="help-block" ng-show="form.fullName.$error.required">We really want to know your name.</p>
+            <p class="help-block" ng-show="form.fullName.$error.minlength">Oops, too short, should be at least 4 characters.</p>
           </div>
         </div>
 
@@ -21,7 +23,7 @@
             placeholder="What's your unique username?"
             ng-model="vm.account.username"
             required
-            ng-pattern="/[a-zA-Z][a-zA-Z0-9.\-_]/"
+            ng-pattern="/[a-zA-Z][a-zA-Z0-9.\-_]*/"
             minlength="4"
             maxlength="32"
             ng-change="vm.usernameError = false">
@@ -55,9 +57,9 @@
               minlength="6"
               maxlength="32">
           <div ng-show="form.$submitted || form.password.$dirty">
-            <p class="help-block" ng-show="form.password.$error.required">Password is required, we care about security.</p>
+            <p class="help-block" ng-show="form.password.$error.required">Password is required, we care about your security.</p>
             <p class="help-block" ng-show="form.password.$error.minlength">Too short, hackers can break it.</p>
-            <p class="help-block" ng-show="form.password.$error.minlength">Too long, it will be hard to remember it.</p>
+            <p class="help-block" ng-show="form.password.$error.maxlength">Too long, it will be hard to remember it.</p>
           </div>
         </div>
 

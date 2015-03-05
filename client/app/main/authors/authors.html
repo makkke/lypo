@@ -14,8 +14,11 @@
         <p><a class="btn btn-success btn-lg" href role="button" ng-click="vm.openCreate()">Create author</a></p>
       </div>
 
-      <div class="list-group" ng-if="!vm.isEmpty() && !vm.loading">
-        <a href="#" class="list-group-item" ng-repeat="author in vm.authors">{{ author.fullName }}</a>
+      <div class="list-group " ng-if="!vm.isEmpty() && !vm.loading">
+        <a href="#" class="list-group-item" ng-repeat="author in vm.authors">
+          {{ author.fullName }}
+          <i class="fa fa-trash pull-right" ng-click="vm.openRemove(author)"></i>
+        </a>
       </div>
     </div>
   </div>

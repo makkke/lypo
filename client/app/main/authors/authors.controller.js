@@ -13,6 +13,7 @@
 
     vm.openCreate = openCreate;
     vm.openSearch = openSearch;
+    vm.openRemove = openRemove;
     vm.isEmpty = isEmpty;
 
     activate();
@@ -50,6 +51,19 @@
         templateUrl: 'app/main/authors/search/author.search.html',
         controller: 'AuthorSearchCtrl',
         controllerAs: 'vm'
+      });
+
+      modalInstance.result.then(function () {
+        loadAuthors();
+      });
+    }
+
+    function openRemove(author) {
+      var modalInstance = $modal.open({
+        templateUrl: 'app/main/authors/remove/author.remove.html',
+        controller: 'AuthorRemoveCtrl',
+        controllerAs: 'vm',
+        resolve: { author: function () { return author; } }
       });
 
       modalInstance.result.then(function () {
