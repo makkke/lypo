@@ -23,7 +23,7 @@
             placeholder="What's your unique username?"
             ng-model="vm.account.username"
             required
-            ng-pattern="/[a-zA-Z][a-zA-Z0-9.\-_]*/"
+            ng-pattern="/^[a-zA-Z][a-zA-Z0-9.\-_]*$/"
             minlength="4"
             maxlength="32"
             ng-change="vm.usernameError = false">
@@ -41,10 +41,11 @@
             placeholder="What's you email?"
             ng-model="vm.account.email"
             required
+            ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/"
             ng-change="vm.emailError = false">
           <div ng-show="form.$submitted || form.email.$dirty">
             <p class="help-block" ng-show="form.email.$error.required">We can't communicate with you without your email.</p>
-            <p class="help-block" ng-show="form.email.$error.email">Doesn't look like a valid email.</p>
+            <p class="help-block" ng-show="form.email.$error.pattern">Doesn't look like a valid email.</p>
             <p class="help-block" ng-show="vm.emailError">Email like that already registered.</p>
           </div>
         </div>
