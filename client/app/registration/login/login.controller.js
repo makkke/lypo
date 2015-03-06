@@ -34,13 +34,13 @@
           .login(vm.credentials)
           .then(function () {
             stopLoading();
-            $location.path('/timeline');
+            $location.path('/lypos');
           })
           .catch(function (err) {
             stopLoading();
             handleError(err);
           });
-      } else if (!form.email.$error.required && !form.password.$error.required) {
+      } else if (!form.username.$error.required && !form.password.$error.required) {
         handleError();
       }
     }
