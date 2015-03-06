@@ -12,7 +12,7 @@ var _         = require('lodash'),
     crypto    = require('crypto'),
     Author   = require('../server/api/authors/author.model');
 
-var config = devConfig;
+var config = qaConfig;
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 Author.find(function (err, authors) {
