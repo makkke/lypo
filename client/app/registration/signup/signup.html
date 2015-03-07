@@ -11,7 +11,8 @@
             ng-model="vm.account.fullName"
             autofocus
             required
-            minlength="4">
+            minlength="4"
+            maxlength="64">
           <div ng-show="form.$submitted || form.fullName.$dirty">
             <p class="help-block" ng-show="form.fullName.$error.required">We really want to know your name.</p>
             <p class="help-block" ng-show="form.fullName.$error.minlength">Oops, too short, should be at least 4 characters.</p>
