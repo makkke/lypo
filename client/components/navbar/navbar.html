@@ -17,7 +17,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right text-center">
-        <li><p class="navbar-text"><img ng-src="{{ vm.account.avatar.url + '?s=30&d=mm' }}" class="profile-image img-circle"> {{ vm.account.fullName }}</p></li>
+        <li><p class="navbar-text"><img class="profile-image img-circle" width="30" ng-src="{{ vm.account.avatar.url + '?s=60&d=mm' }}"> {{ vm.account.fullName }}</p></li>
         <li ng-class="{ active: vm.isActive('/logout') }"><a href="" ng-click="vm.logout()">Logout</a></li>
       </ul>
     </div>

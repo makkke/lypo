@@ -25,8 +25,8 @@
     function getMenu() {
       return [
         {
-          'title': 'Timeline',
-          'link': '/timeline'
+          'title': 'Lypos',
+          'link': '/lypos'
         },
         {
           'title': 'Authors',

@@ -7,7 +7,7 @@
 
   function SignupCtrl($scope, Auth, $location, $window) {
     var vm = this,
-        title = 'Log In | Lypo',
+        title = 'Sign Up | Lypo',
         signupButtonText = 'Create an Account';
 
     vm.account = {};
