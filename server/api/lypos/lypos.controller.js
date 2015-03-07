@@ -1,15 +1,19 @@
 'use strict';
 
-var _ = require('lodash');
-var Lypo = require('./lypo.model');
-var Author = require('../authors/author.model');
+var _ = require('lodash'),
+    Lypo = require('./lypo.model'),
+    Author = require('../authors/author.model'),
+    Account = require('../accounts/account.model');
 
 exports.index = function (req, res) {
-  Author
-    .find({ account: req.account._id }, function (err, authors) {
+  var favorited = false;
+  if(req.query.favorited) { favorited = (req.query.favorited === 'true'); }
+  if(favorited) {
+    Account.findById(req.account._id, function (err, account) {
+      if(err) { return serverError(res, err); }
       Lypo
         .find()
-        .or([{ creator: req.account._id }, { author: { $in: authors } }])
+        .where('_id').in(account.favorites)
         .populate('author')
         .populate('creator', '_id fullName avatar')
         .exec(function (err, lypos) {
@@ -17,6 +21,7 @@ exports.index = function (req, res) {
           Lypo.populate(lypos, { path: 'author.account', select: '_id fullName avatar', model: 'Account' }, function (err, lypos) {
             if(err) { return serverError(res, err); }
             lypos = _.map(lypos, function (lypo) {
+              lypo.favorited = true;
               if(lypo.author.account) {
                 lypo.author = {
                   fullName: lypo.author.account.fullName,
@@ -28,11 +33,42 @@ exports.index = function (req, res) {
               }
               return lypo;
             });
-            // console.log(lypos);
             return res.json(200, lypos);
           })
         })
+    })
+  } else {
+    Account.findById(req.account._id, function (err, account) {
+      if(err) { return serverError(res, err); }
+      Author.find({ account: req.account._id }, function (err, authors) {
+        Lypo
+          .find()
+          .or([{ creator: req.account._id }, { author: { $in: authors } }])
+          .populate('author')
+          .populate('creator', '_id fullName avatar')
+          .exec(function (err, lypos) {
+            if(err) { return serverError(res, err); }
+            Lypo.populate(lypos, { path: 'author.account', select: '_id fullName avatar', model: 'Account' }, function (err, lypos) {
+              if(err) { return serverError(res, err); }
+              lypos = _.map(lypos, function (lypo) {
+                lypo.favorited = account.favorites.indexOf(lypo._id) !== -1;
+                if(lypo.author.account) {
+                  lypo.author = {
+                    fullName: lypo.author.account.fullName,
+                    avatar: {
+                      url: lypo.author.account.avatar.url
+                    },
+                    account: lypo.author.account._id,
+                  }
+                }
+                return lypo;
+              });
+              return res.json(200, lypos);
+            })
+          })
+      });
     });
+  }
 };
 
 // // Get a single lypo
@@ -78,6 +114,45 @@ exports.destroy = function (req, res) {
     lypo.remove(function (err) {
       if(err) { return serverError(res, err); }
       return noContent(res);
+    });
+  });
+};
+
+exports.favorite = function (req, res) {
+  Lypo.findOne({
+    _id: req.params.id,
+    creator: req.account._id,
+  })
+  .exec(function (err, lypo) {
+    if(err) { return serverError(res, err); }
+    if(!lypo) { return notFoundError(res); }
+    Account.findById(req.account._id, function (err, account) {
+      if(err) { return serverError(res, err); }
+      account.favorites = account.favorites || [];
+      if(account.favorites.indexOf(lypo._id) === -1) {
+        account.favorites.push(lypo._id);
+        account.save();
+      }
+      return res.json(200, {});
+    });
+  });
+};
+
+exports.unfavorite = function (req, res) {
+  Lypo.findOne({
+    _id: req.params.id,
+    creator: req.account._id,
+  })
+  .exec(function (err, lypo) {
+    if(err) { return serverError(res, err); }
+    if(!lypo) { return notFoundError(res); }
+    Account.findById(req.account._id, function (err, account) {
+      if(err) { return serverError(res, err); }
+      account.favorites = account.favorites || [];
+      _.remove(account.favorites, lypo._id);
+      account.markModified('favorites');
+      account.save()
+      return res.json(200, {});
     });
   });
 };

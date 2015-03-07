@@ -20,10 +20,10 @@
 
     ////////////////////////////////
 
-    function query() {
+    function query(params) {
       return Restangular
         .all(route)
-        .getList();
+        .getList(params);
     }
 
     function create(lypo) {
@@ -42,13 +42,19 @@
       model.at = moment(model.at);
 
       model.isAuthored = function () {
-        // return model.creator.id === model.author.account;
         return model.author.account === Auth.account.id;
       };
 
       model.isCreated = function () {
-        // return model.creator.id === model.author.account;
         return model.creator.id === Auth.account.id;
+      };
+
+      model.favorite = function () {
+        return model.customPUT(null, 'favorite');
+      };
+
+      model.unfavorite = function () {
+        return model.customPUT(null, 'unfavorite');
       };
 
       return model;

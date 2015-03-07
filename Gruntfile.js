@@ -468,11 +468,13 @@ module.exports = function (grunt) {
       server: {
         options: {
           paths: [
+            'node_modules/jeet/stylus',
+            // 'node_modules/rupture',
             '<%= yeoman.client %>/bower_components',
             '<%= yeoman.client %>/app',
             '<%= yeoman.client %>/components'
           ],
-          "include css": true
+          'include css': true
         },
         files: {
           '.tmp/app/app.css' : '<%= yeoman.client %>/app/app.styl'

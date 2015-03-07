@@ -5,28 +5,42 @@
     .module('lypo.app')
     .controller('LyposCtrl', LyposCtrl);
 
-  function LyposCtrl($scope, $modal, Lypos) {
-    var vm = this;
+  function LyposCtrl($scope, $window, $modal, Lypos) {
+    var vm = this,
+        title = 'Lypos | Lypo';
 
     vm.groups = [];
     vm.loading = true;
+    vm.filter = 'all';
 
     vm.openCreate = openCreate;
     vm.openRemove = openRemove;
     vm.isEmpty = isEmpty;
+
+    $scope.$watch('vm.filter', function (current) {
+      if(current) {
+        if(current === 'all') {
+          loadLypos();
+        } else {
+          loadLypos(true);
+        }
+      }
+    });
 
     activate();
 
     ////////////////////////////////
 
     function activate() {
+      $window.document.title = title;
       loadLypos();
     }
 
-    function loadLypos() {
+    function loadLypos(favorited) {
+      favorited = favorited || false;
       vm.loading = true;
       Lypos
-        .query()
+        .query({ favorited: favorited })
         .then(function (lypos) {
           vm.lypos = lypos;
           vm.empty = lypos.length === 0;
@@ -63,7 +77,7 @@
     function sortGroups() {
       vm.groups = [];
       _.each(vm.lypos, function (lypo) {
-        var day = lypo.at.format('MMM D');
+        var day = lypo.at.format('MMMM D');
         var group = _.find(vm.groups, { day: day });
         if(group) {
           group.lypos.push(lypo);

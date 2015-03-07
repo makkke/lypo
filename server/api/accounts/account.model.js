@@ -16,7 +16,8 @@ var AccountSchema = new Schema({
   google: {},
   avatar: {
     url: String
-  }
+  },
+  favorites: [{ type: Schema.Types.ObjectId, ref: 'Lypo' }]
 });
 
 /**

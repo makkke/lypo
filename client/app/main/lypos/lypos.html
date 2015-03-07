@@ -1,8 +1,4 @@
 <div class="container">
-  <div class="alert alert-info" role="alert">
-    We are in <strong>alpha</strong> at the moment and we would like to hear your thoughts.
-  </div>
-
   <div class="page-header" style="position: relative;">
     <h1>Lypos</h1>
     <a href class="page-btn--create" ng-click="vm.openCreate()" ng-if="!vm.isEmpty()"><i class="fa fa-plus"></i></a>
@@ -17,24 +13,38 @@
         <p><a class="btn btn-success btn-lg" href role="button" ng-click="vm.openCreate()">Let's Create One</a></p>
       </div>
 
-      <div ng-repeat="group in vm.groups | orderBy:'-day'" ng-if="!vm.isEmpty() && !vm.loading">
-        <h2>{{ group.day }}</h2>
-        <div class="list-group lypo-item" ng-repeat="lypo in group.lypos | orderBy:'-at'">
-          <a href="#" class="list-group-item">
-            <div class="lypo-item__remove" ng-click="vm.openRemove(lypo)" ng-if="lypo.isCreated()">
-              <i class="fa fa-trash"></i>
+      <div ng-if="!vm.isEmpty() && !vm.loading">
+        <div class="btn-group btn-group-justified">
+          <label class="btn btn-default" ng-model="vm.filter" btn-radio="'all'">All</label>
+          <label class="btn btn-default" ng-model="vm.filter" btn-radio="'favorites'"><i class="fa fa-star color--yellow"></i> Favorites</label>
+        </div>
+
+        <div ng-repeat="group in vm.groups | orderBy:'-day'">
+          <h2>{{ group.day }}</h2>
+          <div class="lypo" ng-repeat="lypo in group.lypos | orderBy:'-at'">
+            <div class="lypo__tools">
+              <span class="dropdown" dropdown on-toggle="toggled(open)">
+                <span class="dropdown-toggle" dropdown-toggle>
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <ul class="dropdown-menu">
+                  <li><a href ng-if="!lypo.favorited" ng-click="lypo.favorite()"><i class="fa fa-star color--yellow"></i> Favorite</a></li>
+                  <li><a href ng-if="lypo.favorited" ng-click="lypo.unfavorite()"><i class="fa fa-star-o"></i> Unfavorite</a></li>
+                  <li><a href ng-click="vm.openRemove(lypo)" ng-if="lypo.isCreated()"><i class="fa fa-trash-o"></i> Delete</a></li>
+                </ul>
+              </span>
             </div>
-
-            <h3 class="list-group-item-heading text-center">{{ lypo.text }}</h3>
-            <h3 class="list-group-item-heading text-center"><small>at {{ lypo.at | amDateFormat:'ha' }}</small></h3>
-
-            <div>
-              <p class="list-group-item-text">
+            <h3 class="lypo__text">{{ lypo.text }}</h3>
+            <p class="lypo__time">at {{ lypo.at | amDateFormat:'ha' }}</p>
+            <div class="lypo__footer">
+              <div class="lypo__author">
                 <span popover="{{ lypo.author.fullName }}" popover-trigger="click" popover-placement="right">said by <img class="img-circle" width="20" ng-src="{{ lypo.author.avatar.url + '?s=40&d=mm' }}"></span>
-                <span class="pull-right" popover="{{ lypo.creator.fullName }}" popover-trigger="click" popover-placement="left">created by <img class="img-circle" width="20" ng-src="{{ lypo.creator.avatar.url + '?s=40&d=mm' }}"></span>
-              </p>
+              </div>
+              <div class="lypo__creator">
+                <span popover="{{ lypo.creator.fullName }}" popover-trigger="click" popover-placement="left">created by <img class="img-circle" width="20" ng-src="{{ lypo.creator.avatar.url + '?s=40&d=mm' }}"></span>
+              </div>
             </div>
-          </a>
+          </div>
         </div>
       </div>
     </div>

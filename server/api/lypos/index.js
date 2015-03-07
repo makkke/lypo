@@ -12,4 +12,7 @@ router.post('/', auth.isAuthenticated(), controller.create);
 // router.put('/:id', controller.update);
 router.delete('/:id', auth.isAuthenticated(), controller.destroy);
 
+router.put('/:id/favorite', auth.isAuthenticated(), controller.favorite);
+router.put('/:id/unfavorite', auth.isAuthenticated(), controller.unfavorite);
+
 module.exports = router;

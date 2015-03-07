@@ -5,8 +5,9 @@
     .module('lypo.app')
     .controller('AuthorsCtrl', AuthorsCtrl);
 
-  function AuthorsCtrl($scope, $modal, Authors) {
-    var vm = this;
+  function AuthorsCtrl($window, $modal, Authors) {
+    var vm = this,
+        title = 'Authors | Lypo';
 
     vm.authors = [];
     vm.loading = true;
@@ -21,6 +22,7 @@
     ////////////////////////////////
 
     function activate() {
+      $window.document.title = title;
       loadAuthors();
     }
 

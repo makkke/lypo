@@ -8,7 +8,8 @@ var LypoSchema = new Schema({
   creator: { type: Schema.Types.ObjectId, ref: 'Account', required: true },
   author: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
   text: { type: String, required: true },
-  at: { type: Date, required: true }
+  at: { type: Date, required: true },
+  favorited: Boolean
 });
 
 LypoSchema.set('toJSON', {
