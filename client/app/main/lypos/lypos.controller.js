@@ -10,6 +10,7 @@
         title = 'Lypos | Lypo';
 
     vm.groups = [];
+    vm.years = [];
     vm.loading = true;
     vm.filter = 'all';
 
@@ -44,7 +45,7 @@
         .then(function (lypos) {
           vm.lypos = lypos;
           vm.empty = lypos.length === 0;
-          sortGroups();
+          sortLypos();
           vm.loading = false;
         });
     }
@@ -74,17 +75,32 @@
       });
     }
 
-    function sortGroups() {
-      vm.groups = [];
+    function sortLypos() {
+      vm.years = [];
+
       _.each(vm.lypos, function (lypo) {
-        var day = lypo.at.format('MMMM D');
-        var group = _.find(vm.groups, { day: day });
-        if(group) {
-          group.lypos.push(lypo);
+        var y = lypo.at.year();
+        var m = lypo.at.month();
+        var d = lypo.at.date();
+
+        var year = _.find(vm.years, { year: y });
+        if(year) {
+          var month = _.find(year.months, { month: m });
+          if(month) {
+            var day = _.find(month.days, { day: d });
+            if(day) {
+              day.lypos.push(lypo);
+            } else {
+              month.days.push({ day: d, name: d, lypos: [lypo] });
+            }
+          } else {
+            year.months.push({ month: m, name: moment.months()[m], days: [{ day: d, name: d, lypos: [lypo] }] });
+          }
         } else {
-          vm.groups.push({
-            day: day,
-            lypos: [lypo]
+          vm.years.push({
+            year: y,
+            name: y,
+            months: [{ month: m, name: moment.months()[m], days: [{ day: d, name: d, lypos: [lypo] }] }]
           });
         }
       });
