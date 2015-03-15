@@ -7,12 +7,12 @@
 var _         = require('lodash'),
     mongoose  = require('mongoose'),
     devConfig = require('../server/config/environment/development'),
-    qaConfig  = require('../server/config/environment/qa'),
+    //qaConfig  = require('../server/config/environment/qa'),
     prConfig  = require('../server/config/environment/production'),
     crypto    = require('crypto'),
     Author   = require('../server/api/authors/author.model');
 
-var config = qaConfig;
+var config = devConfig;
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 Author.find(function (err, authors) {

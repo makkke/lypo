@@ -15,7 +15,7 @@
       </div>
 
       <div class="list-group " ng-if="!vm.isEmpty() && !vm.loading">
-        <a href="#" class="list-group-item" ng-repeat="author in vm.authors">
+        <a href="#" class="list-group-item" ng-repeat="author in vm.authors | orderBy:'fullName'">
           {{ author.fullName }}
           <i class="fa fa-trash pull-right" ng-click="vm.openRemove(author)"></i>
         </a>
