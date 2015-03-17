@@ -9,7 +9,6 @@
     var vm = this,
         title = 'Lypos | Lypo';
 
-    vm.groups = [];
     vm.years = [];
     vm.loading = true;
     vm.filter = 'all';
