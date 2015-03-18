@@ -6,6 +6,7 @@ exports.index = function(req, res) {
   res.json({
     currentYear: new Date().getFullYear(),
     apiUrl: '/api',
-    tokenName: 'lypo.token'
+    tokenName: 'lypo.token',
+    environment: config.env
   });
 };
