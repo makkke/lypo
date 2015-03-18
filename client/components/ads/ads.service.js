@@ -6,9 +6,9 @@
     .factory('Ads', Ads);
 
   function Ads(Settings) {
-    var publisherId = Settings.environment === 'production' ? 1100001518 : 0;
-    var headerBannerAdSpaceId = Settings.environment === 'production' ? 130003534 : 0;
-    var footerBannerAdSpaceId = Settings.environment === 'production' ? 130003533 : 0;
+    var publisherId = Settings.showAds ? 1100001518 : 0;
+    var headerBannerAdSpaceId = Settings.showAds ? 130003534 : 0;
+    var footerBannerAdSpaceId = Settings.showAds ? 130003533 : 0;
 
     var defaultCallback = function (status) {
       if(status === 'SUCCESS'){
@@ -38,7 +38,7 @@
     }
 
     function loadFooterBanner(callback) {
-      callback = callback || angular.noop;
+      callback = callback || defaultCallback;
       SomaJS.loadAd({
         adDivId : 'footer-ad',
         publisherId: publisherId,

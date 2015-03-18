@@ -7,6 +7,7 @@ exports.index = function(req, res) {
     currentYear: new Date().getFullYear(),
     apiUrl: '/api',
     tokenName: 'lypo.token',
-    environment: config.env
+    environment: config.env,
+    showAds: config.showAds
   });
 };
