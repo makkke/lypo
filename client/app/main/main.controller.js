@@ -5,7 +5,7 @@
     .module('lypo.app')
     .controller('MainCtrl', MainCtrl);
 
-  function MainCtrl(Settings, Ads) {
+  function MainCtrl($timeout, Settings, Ads) {
     var vm = this;
 
     vm.year = Settings.currentYear;
@@ -15,7 +15,9 @@
     ////////////////////////////////
 
     function activate() {
-      Ads.loadHeaderBanner();
+      $timeout(function () {
+        Ads.loadHeaderBanner();
+      }, 1000);
     }
   }
 })();
