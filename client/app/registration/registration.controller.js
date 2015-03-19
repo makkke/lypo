@@ -5,7 +5,7 @@
     .module('lypo.app')
     .controller('RegistrationCtrl', RegistrationCtrl);
 
-  function RegistrationCtrl(Ads) {
+  function RegistrationCtrl($scope, Ads) {
     // var vm = this;
 
     activate();
@@ -13,7 +13,11 @@
     ////////////////////////////////
 
     function activate() {
-      Ads.loadFooterBanner();
+      $scope.$on('$destroy', function () {
+        Ads.footerBanner.unload();
+      });
+
+      Ads.footerBanner.load();
     }
   }
 })();
