@@ -7,7 +7,11 @@ var _ = require('lodash'),
 
 exports.index = function (req, res) {
   var favorited = false;
+  var skip = req.query.skip || 0;
+  var limit = req.query.limit || 10;
+
   if(req.query.favorited) { favorited = (req.query.favorited === 'true'); }
+
   if(favorited) {
     Account.findById(req.account._id, function (err, account) {
       if(err) { return serverError(res, err); }
@@ -16,6 +20,9 @@ exports.index = function (req, res) {
         .where('_id').in(account.favorites)
         .populate('author')
         .populate('creator', '_id fullName avatar')
+        .sort('-at')
+        .skip(skip)
+        .limit(limit)
         .exec(function (err, lypos) {
           if(err) { return serverError(res, err); }
           Lypo.populate(lypos, { path: 'author.account', select: '_id fullName avatar', model: 'Account' }, function (err, lypos) {
@@ -46,6 +53,9 @@ exports.index = function (req, res) {
           .or([{ creator: req.account._id }, { author: { $in: authors } }])
           .populate('author')
           .populate('creator', '_id fullName avatar')
+          .sort('-at')
+          .skip(skip)
+          .limit(limit)
           .exec(function (err, lypos) {
             if(err) { return serverError(res, err); }
             Lypo.populate(lypos, { path: 'author.account', select: '_id fullName avatar', model: 'Account' }, function (err, lypos) {

@@ -10,20 +10,29 @@
         title = 'Lypos | Lypo';
 
     vm.years = [];
-    vm.loading = true;
+    vm.loading = true;  // initial lypos loading indicator
+    vm.busy = false;    // additional lypos loading indicator
+    vm.done = false;    // all lypos loadedd indicator
     vm.filter = 'all';
+    vm.params = {
+      skip: 0,
+      limit: 10,
+      favorited: false
+    };
 
     vm.openCreate = openCreate;
     vm.openRemove = openRemove;
     vm.isEmpty = isEmpty;
+    vm.loadNextLypos = loadNextLypos;
 
-    $scope.$watch('vm.filter', function (current) {
-      if(current) {
+    $scope.$watch('vm.filter', function (current, previous) {
+      if(current && current !== previous) {
         if(current === 'all') {
-          loadLypos();
+          vm.params.favorited = false;
         } else {
-          loadLypos(true);
+          vm.params.favorited = true;
         }
+        loadLypos();
       }
     });
 
@@ -36,16 +45,33 @@
       loadLypos();
     }
 
-    function loadLypos(favorited) {
-      favorited = favorited || false;
+    function loadLypos() {
       vm.loading = true;
+      vm.params.skip = 0;
+      vm.params.limit = 10;
       Lypos
-        .query({ favorited: favorited })
+        .query(vm.params)
         .then(function (lypos) {
           vm.lypos = lypos;
           vm.empty = lypos.length === 0;
           sortLypos();
           vm.loading = false;
+        });
+    }
+
+    function loadNextLypos() {
+      if(vm.busy) { return; }
+      vm.busy = true;
+      vm.params.skip += vm.params.limit;
+      Lypos
+        .query(vm.params)
+        .then(function (lypos) {
+          if(lypos.length === 0) {
+            vm.done = true;
+          } else {
+            sortLypos(lypos);
+            vm.busy = false;
+          }
         });
     }
 
@@ -74,10 +100,13 @@
       });
     }
 
-    function sortLypos() {
-      vm.years = [];
+    function sortLypos(lypos) {
+      var lyposToSort = lypos || vm.lypos;
+      if(!lypos) {
+        vm.years = [];
+      }
 
-      _.each(vm.lypos, function (lypo) {
+      _.each(lyposToSort, function (lypo) {
         var y = lypo.at.year();
         var m = lypo.at.month();
         var d = lypo.at.date();

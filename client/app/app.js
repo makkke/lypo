@@ -9,7 +9,8 @@ angular.module('lypo.app', [
   'ui.bootstrap',
   'ui.select',
   'restangular',
-  'angularMoment'
+  'angularMoment',
+  'infinite-scroll'
 ])
 .config(function ($urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/lypos');

@@ -21,6 +21,7 @@
     ////////////////////////////////
 
     function query(params) {
+      params.favorited = params.favorited || false;
       return Restangular
         .all(route)
         .getList(params);

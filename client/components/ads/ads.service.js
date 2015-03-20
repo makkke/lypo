@@ -6,7 +6,6 @@
     .factory('Ads', Ads);
 
   function Ads($timeout, $interval, Settings) {
-    var defaultTimeout = 1*1000; // 1s
     var refreshInterval = 60*1000; // 1m
 
     // TODO: move to settings on server
@@ -42,12 +41,11 @@
 
     function loadHeaderBanner(callback) {
       callback = callback || defaultCallback;
-      $timeout(function () {
+
+      initHeaderBanner(callback);
+      headerBannerStop = $interval(function () {
         initHeaderBanner(callback);
-        headerBannerStop = $interval(function () {
-          initHeaderBanner(callback);
-        }, refreshInterval);
-      }, defaultTimeout);
+      }, refreshInterval);
     }
 
     function unloadHeaderBanner() {
@@ -58,22 +56,25 @@
     }
 
     function initHeaderBanner(callback) {
-      SomaJS.loadAd({
-        adDivId : 'header-ad',
-        publisherId: publisherId,
-        adSpaceId: headerBannerAdSpaceId,
-        dimension: 'xxlarge'
-      }, callback);
+      try {
+        SomaJS.loadAd({
+          adDivId : 'header-ad',
+          publisherId: publisherId,
+          adSpaceId: headerBannerAdSpaceId,
+          dimension: 'xxlarge'
+        }, callback);
+      } catch (e) {
+        initFooterBanner(callback);
+      }
     }
 
     function loadFooterBanner(callback) {
       callback = callback || defaultCallback;
-      $timeout(function () {
+
+      initFooterBanner(callback);
+      footerBannerStop = $interval(function () {
         initFooterBanner(callback);
-        footerBannerStop = $interval(function () {
-          initFooterBanner(callback);
-        }, refreshInterval);
-      }, defaultTimeout);
+      }, refreshInterval);
     }
 
     function unloadFooterBanner() {
@@ -84,12 +85,16 @@
     }
 
     function initFooterBanner(callback) {
-      SomaJS.loadAd({
-        adDivId : 'footer-ad',
-        publisherId: publisherId,
-        adSpaceId: footerBannerAdSpaceId,
-        dimension: 'medrect'
-      }, callback);
+      try {
+        SomaJS.loadAd({
+          adDivId : 'footer-ad',
+          publisherId: publisherId,
+          adSpaceId: footerBannerAdSpaceId,
+          dimension: 'medrect'
+        }, callback);
+      } catch (e) {
+        initFooterBanner(callback);
+      }
     }
   }
 
