@@ -61,7 +61,7 @@
           adDivId : 'header-ad',
           publisherId: publisherId,
           adSpaceId: headerBannerAdSpaceId,
-          dimension: 'xxlarge'
+          dimension: 'medrect'
         }, callback);
       } catch (e) {
         initFooterBanner(callback);
